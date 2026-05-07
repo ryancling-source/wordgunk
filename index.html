@@ -661,8 +661,8 @@ Respond ONLY with valid JSON (no markdown, no backticks):
         messages: [{ role: "user", content: prompt }]
       })
     });
-    const data = await response.json();
-    const text = data.content.map(i => i.text || '').join('');
+    
+    const text = await response.text();
     const word = JSON.parse(text.replace(/```json|```/g, '').trim());
     displayWord(word);
     addToArchive(word);
@@ -719,8 +719,8 @@ Respond ONLY with valid JSON (no markdown, no backticks):
         messages: [{ role: "user", content: prompt }]
       })
     });
-    const data = await response.json();
-    const text = data.content.map(i => i.text || '').join('');
+    
+    const text = await response.text();
     const word = JSON.parse(text.replace(/```json|```/g, '').trim());
     word.humanCoined = true;
     coinedWord = word;
