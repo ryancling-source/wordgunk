@@ -662,8 +662,8 @@ Respond ONLY with valid JSON (no markdown, no backticks):
       })
     });
     
-    const text = await response.text();
-    const word = JSON.parse(text.replace(/```json|```/g, '').trim());
+    const data = await response.json();
+    const text = data.content.map(i => i.text || '').join(''); const word = JSON.parse(text.replace(/```json|```/g, '').trim());
     displayWord(word);
     addToArchive(word);
   } catch (err) {
@@ -720,8 +720,8 @@ Respond ONLY with valid JSON (no markdown, no backticks):
       })
     });
     
-    const text = await response.text();
-    const word = JSON.parse(text.replace(/```json|```/g, '').trim());
+    const data = await response.json();
+    const text = data.content.map(i => i.text || '').join(''); const word = JSON.parse(text.replace(/```json|```/g, '').trim());
     word.humanCoined = true;
     coinedWord = word;
     showCoinedPreview(word);
