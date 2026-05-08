@@ -207,7 +207,7 @@ async function generateWord(){
   btn.disabled=true;btn.textContent='...';
   loading.style.display='block';featured.style.opacity='0.3';errorState.style.display='none';
   var catPrompt=currentCategory==='all'?'Pick any funny contemporary category (social media, dating, work culture, parenting, consumerism, wellness culture, tech)':'Category: '+currentCategory;
-  var prompt='You are a satirical lexicographer inventing hilarious new English words for modern life. '+catPrompt+'.\nInvent ONE new comedic word capturing a specific painfully relatable modern experience.\nRespond ONLY with valid JSON no markdown no backticks:\n{"word":"WORDNAME","pos":"n.","pronunciation":"/phonetic/","etymology":"From root1 + root2","definition":"Witty definition, max 20 words, 1 sentence..","example":"Funny example sentence, max 15 words.","category":"category"}';
+  var prompt='You are a satirical lexicographer inventing hilarious new English words for modern life. '+catPrompt+'.\nInvent ONE new comedic word capturing a specific painfully relatable modern experience. Keep definition under 20 words. Keep example sentence under 15 words.\nRespond ONLY with valid JSON no markdown no backticks:\n{"word":"WORDNAME","pos":"n.","pronunciation":"/phonetic/","etymology":"From root1 + root2","definition":"Witty definition, max 20 words, 1 sentence..","example":"Funny example sentence, max 15 words.","category":"category"}';
   try{
     var word=await callAPI(prompt,500);
     displayWord(word);addToArchive(word);
