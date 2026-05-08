@@ -199,7 +199,7 @@ async function callAPI(prompt,maxTokens){
   return JSON.parse(text.replace(/```json|```/g,'').trim());
 }
 
-async function generateWord(){
+function truncateWord(w){var d=w.definition.split(" ");var e=w.example.split(" ");if(d.length>20)w.definition=d.slice(0,20).join(" ")+"...";if(e.length>15)w.example=e.slice(0,15).join(" ")+"...";return w;}async function generateWord(){
   var btn=document.getElementById('generateBtn');
   var loading=document.getElementById('loadingState');
   var featured=document.getElementById('featuredWord');
