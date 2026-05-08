@@ -72,7 +72,7 @@
   #shareCardTarget .sc-brand{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:.04em;margin-bottom:2rem;padding-bottom:1.2rem;border-bottom:4px solid var(--ink);display:flex;justify-content:space-between;align-items:baseline}
   #shareCardTarget .sc-brand span{color:var(--accent)}
   #shareCardTarget .sc-brand small{font-family:'DM Mono',monospace;font-size:.9rem;color:var(--muted);letter-spacing:.1em}
-  #shareCardTarget .sc-word{font-family:'Bebas Neue',sans-serif;font-size:12rem;letter-spacing:.02em;line-height:1;margin-bottom:.3rem}
+  #shareCardTarget .sc-word{font-family:'Bebas Neue',sans-serif;font-size:7rem;letter-spacing:.02em;line-height:1;margin-bottom:.3rem}
   #shareCardTarget .sc-meta{font-family:'DM Mono',monospace;font-size:2.8rem;color:var(--gold);margin-bottom:2rem;display:flex;gap:1.5rem}
   #shareCardTarget .sc-meta .pos{color:var(--muted);font-style:italic;font-family:'DM Serif Display',serif;font-size:1.3rem}
   #shareCardTarget .sc-etymology{font-family:'DM Mono',monospace;font-size:2rem;color:var(--muted);border-left:5px solid var(--gold);padding-left:1rem;margin-bottom:2rem}
@@ -284,7 +284,7 @@ async function shareCurrentWord(){
   var shareBtn=document.querySelector('.share-bar .btn-accent');
   shareBtn.textContent='Generating...';shareBtn.disabled=true;
   try{
-    var canvas=await html2canvas(document.getElementById('shareCardTarget'),{scale:1,useCORS:true,backgroundColor:'#ede5d0',logging:false,width:1080,height:2160});
+    var canvas=await html2canvas(document.getElementById('shareCardTarget'),{scale:1,useCORS:true,backgroundColor:'#ede5d0',logging:false,width:1080,height:1620});
     shareCardDataUrl=canvas.toDataURL('image/png');
     document.getElementById('sharePreviewImg').src=shareCardDataUrl;
     document.getElementById('shareModal').classList.add('visible');
