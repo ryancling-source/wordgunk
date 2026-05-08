@@ -284,7 +284,7 @@ async function shareCurrentWord(){
   var shareBtn=document.querySelector('.share-bar .btn-accent');
   shareBtn.textContent='Generating...';shareBtn.disabled=true;
   try{
-    var canvas=await html2canvas(document.getElementById('shareCardTarget'),{scale:1,useCORS:true,backgroundColor:'#ede5d0',logging:false,width:1080,height:900});
+    var canvas=await html2canvas(document.getElementById('shareCardTarget'),{scale:1,useCORS:true,backgroundColor:'#ede5d0',logging:false,width:1080});
     shareCardDataUrl=canvas.toDataURL('image/png');
     document.getElementById('sharePreviewImg').src=shareCardDataUrl;
     document.getElementById('shareModal').classList.add('visible');
