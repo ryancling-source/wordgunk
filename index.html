@@ -805,12 +805,28 @@ async function shareCurrentWord() {
   }
 }
 
-function downloadCard() {
+async async async async async function downloadCard() {
   if (!shareCardDataUrl) return;
-  const a = document.createElement('a');
-  a.href = shareCardDataUrl;
-  a.download = (currentWord ? currentWord.word.toLowerCase() : 'wordgunk') + '-wordgunk.png';
-  a.click();
+  if (navigator.share && /mobile/i.test(navigator.userAgent)) {
+    try {
+      const blob = await (await fetch(shareCardDataUrl)).blob();
+      const file = new File([blob], (currentWord ? currentWord.word.toLowerCase() : 'wordgunk') + '-wordgunk.png', { type: 'image/png' });
+      await navigator.share({ files: [file], title: currentWord ? currentWord.word : 'WORDGUNK' });
+    } catch (err) { console.error(err); }
+  } else {
+    const a = document.createElement('a');
+    a.href = shareCardDataUrl;
+    a.download = (currentWord ? currentWord.word.toLowerCase() : 'wordgunk') + '-wordgunk.png';
+    a.click();
+  }
+      await navigator.share({ files: [file], title: currentWord ? currentWord.word : 'WORDGUNK' });
+    } catch (err) { console.error(err); }
+  } else {
+    const a = document.createElement('a');
+    a.href = shareCardDataUrl;
+    a.download = (currentWord ? currentWord.word.toLowerCase() : 'wordgunk') + '-wordgunk.png';
+    a.click();
+  }
 }
 
 function closeShareModal(e) {
