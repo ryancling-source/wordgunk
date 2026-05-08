@@ -68,16 +68,16 @@
   .archive-card.human-coined{border-color:var(--gold)}
   .archive-card.human-coined::after{content:'✍';display:block;font-size:.65rem;color:var(--gold);margin-top:.4rem}
   .ornament{text-align:center;color:var(--gold);font-size:1rem;letter-spacing:.4rem;margin:1.2rem 0;opacity:.5}
-  #shareCardTarget{position:fixed;left:-9999px;top:0;width:1080px;background:var(--cream);padding:80px;font-family:'DM Serif Display',serif;color:var(--ink)}
+  #shareCardTarget{position:fixed;left:-9999px;top:0;width:1080px;height:1920px;background:var(--cream);padding:80px 80px 60px;font-family:'DM Serif Display',serif;color:var(--ink);border:8px solid var(--ink);display:flex;flex-direction:column;justify-content:space-between}
   #shareCardTarget .sc-brand{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:.04em;margin-bottom:2rem;padding-bottom:1.2rem;border-bottom:4px solid var(--ink);display:flex;justify-content:space-between;align-items:baseline}
   #shareCardTarget .sc-brand span{color:var(--accent)}
   #shareCardTarget .sc-brand small{font-family:'DM Mono',monospace;font-size:.9rem;color:var(--muted);letter-spacing:.1em}
   #shareCardTarget .sc-word{font-family:'Bebas Neue',sans-serif;font-size:7rem;letter-spacing:.02em;line-height:1;margin-bottom:.3rem}
-  #shareCardTarget .sc-meta{font-family:'DM Mono',monospace;font-size:2.8rem;color:var(--gold);margin-bottom:2rem;display:flex;gap:1.5rem}
+  #shareCardTarget .sc-meta{font-family:'DM Mono',monospace;font-size:2rem;color:var(--gold);margin-bottom:1.5rem;display:flex;gap:1.5rem}
   #shareCardTarget .sc-meta .pos{color:var(--muted);font-style:italic;font-family:'DM Serif Display',serif;font-size:1.3rem}
   #shareCardTarget .sc-etymology{font-family:'DM Mono',monospace;font-size:2rem;color:var(--muted);border-left:5px solid var(--gold);padding-left:1rem;margin-bottom:2rem}
-  #shareCardTarget .sc-definition{font-size:3rem;line-height:1.4;margin-bottom:2rem}
-  #shareCardTarget .sc-example{font-style:italic;font-size:2.5rem;color:var(--muted);border-left:8px solid var(--ink);padding-left:1.5rem;line-height:1.5;margin-bottom:3rem}
+  #shareCardTarget .sc-definition{font-size:3.2rem;line-height:1.5;margin-bottom:2rem}
+  #shareCardTarget .sc-example{font-style:italic;font-size:2.6rem;color:var(--muted);border-left:5px solid var(--ink);padding-left:1.5rem;line-height:1.5;margin-bottom:3rem}
   #shareCardTarget .sc-footer{font-family:'DM Mono',monospace;font-size:1rem;color:var(--muted);letter-spacing:.1em;border-top:2px solid var(--ink);padding-top:1.2rem}
   .share-modal{display:none;position:fixed;inset:0;background:rgba(26,18,8,.85);z-index:1000;align-items:flex-end;justify-content:center;padding:1rem}
   .share-modal.visible{display:flex}
@@ -207,7 +207,7 @@ async function generateWord(){
   btn.disabled=true;btn.textContent='...';
   loading.style.display='block';featured.style.opacity='0.3';errorState.style.display='none';
   var catPrompt=currentCategory==='all'?'Pick any funny contemporary category (social media, dating, work culture, parenting, consumerism, wellness culture, tech)':'Category: '+currentCategory;
-  var prompt='You are a satirical lexicographer inventing hilarious new English words for modern life. '+catPrompt+'.\nInvent ONE new comedic word capturing a specific painfully relatable modern experience.\nRespond ONLY with valid JSON no markdown no backticks:\n{"word":"WORDNAME","pos":"n.","pronunciation":"/phonetic/","etymology":"From root1 + root2","definition":"Witty definition 1-2 sentences.","example":"Funny example sentence.","category":"category"}';
+  var prompt='You are a satirical lexicographer inventing hilarious new English words for modern life. '+catPrompt+'.\nInvent ONE new comedic word capturing a specific painfully relatable modern experience.\nRespond ONLY with valid JSON no markdown no backticks:\n{"word":"WORDNAME","pos":"n.","pronunciation":"/phonetic/","etymology":"From root1 + root2","definition":"Witty definition, max 20 words, 1 sentence..","example":"Funny example sentence, max 15 words.","category":"category"}';
   try{
     var word=await callAPI(prompt,500);
     displayWord(word);addToArchive(word);
@@ -229,7 +229,7 @@ async function coinWordFromFeeling(){
   coinBtn.disabled=true;coinBtn.textContent='COINING...';
   hint.textContent='Consulting the lexicographers...';
   var hintLine=lastHint?'\nWord vibe: "'+lastHint+'"':'';
-  var prompt='You are a satirical lexicographer. Invent the PERFECT new word for this feeling:\n"'+situation+'"'+hintLine+'\nRespond ONLY with valid JSON no markdown no backticks:\n{"word":"WORDNAME","pos":"n.","pronunciation":"/phonetic/","etymology":"From root1 + root2","definition":"Precise witty definition.","example":"Funny example sentence."}';
+  var prompt='You are a satirical lexicographer. Invent the PERFECT new word for this feeling:\n"'+situation+'"'+hintLine+'\nRespond ONLY with valid JSON no markdown no backticks:\n{"word":"WORDNAME","pos":"n.","pronunciation":"/phonetic/","etymology":"From root1 + root2","definition":"Precise witty definition.","example":"Funny example sentence, max 15 words."}';
   try{
     var word=await callAPI(prompt,500);
     word.humanCoined=true;coinedWord=word;
@@ -284,7 +284,7 @@ async function shareCurrentWord(){
   var shareBtn=document.querySelector('.share-bar .btn-accent');
   shareBtn.textContent='Generating...';shareBtn.disabled=true;
   try{
-    var canvas=await html2canvas(document.getElementById('shareCardTarget'),{scale:1,useCORS:true,backgroundColor:'#ede5d0',logging:false,width:1080,height:1350});
+    var canvas=await html2canvas(document.getElementById('shareCardTarget'),{scale:1,useCORS:true,backgroundColor:'#ede5d0',logging:false,width:1080,height:1920,windowWidth:1080,windowHeight:1920,width:1080,height:1920,windowWidth:1080,windowHeight:1920});
     shareCardDataUrl=canvas.toDataURL('image/png');
     document.getElementById('sharePreviewImg').src=shareCardDataUrl;
     document.getElementById('shareModal').classList.add('visible');
