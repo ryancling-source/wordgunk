@@ -20,7 +20,7 @@
   .tab{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.08em;padding:.8rem;text-align:center;cursor:pointer;background:var(--paper);color:var(--muted);border:none;transition:all .15s}
   .tab.active{background:var(--ink);color:var(--paper)}
   .tab:first-child{border-right:2px solid var(--ink)}
-  .panel{display:none}.panel.active{display:block}
+  .panel{display:none}.panel.active{display:flex;flex-direction:column;justify-content:space-between}
   .category-pills{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem}
   .pill{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;padding:.3rem .7rem;border:1.5px solid var(--muted);color:var(--muted);cursor:pointer;transition:all .15s;background:transparent;border-radius:2px}
   .pill.active{border-color:var(--accent);color:var(--accent)}
@@ -68,7 +68,7 @@
   .archive-card.human-coined{border-color:var(--gold)}
   .archive-card.human-coined::after{content:'✍';display:block;font-size:.65rem;color:var(--gold);margin-top:.4rem}
   .ornament{text-align:center;color:var(--gold);font-size:1rem;letter-spacing:.4rem;margin:1.2rem 0;opacity:.5}
-  #shareCardTarget{position:fixed;left:-9999px;top:0;width:1080px;min-height:1080px;max-height:1350px;overflow:hidden;background:var(--cream);padding:70px;font-family:'DM Serif Display',serif;color:var(--ink);display:block}
+  #shareCardTarget{position:fixed;left:-9999px;top:0;width:1080px;min-height:1080px;max-height:1350px;overflow:hidden;background:var(--cream);padding:70px;font-family:'DM Serif Display',serif;color:var(--ink);display:flex;flex-direction:column;justify-content:space-between}
   #shareCardTarget .sc-brand{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.04em;margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:3px solid var(--ink);display:flex;justify-content:space-between;align-items:baseline}
   #shareCardTarget .sc-brand span{color:var(--accent)}
   #shareCardTarget .sc-brand small{font-family:'DM Mono',monospace;font-size:.85rem;color:var(--muted);letter-spacing:.1em}
@@ -84,7 +84,7 @@
   .share-modal-inner{background:var(--paper);width:100%;max-width:480px;padding:1.5rem;border:2px solid var(--ink);animation:fadeSlideIn .3s ease}
   .share-modal-title{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:.05em;margin-bottom:1rem;display:flex;justify-content:space-between;align-items:center}
   .share-modal-close{font-family:'DM Mono',monospace;font-size:1.2rem;background:none;border:none;cursor:pointer;color:var(--muted);padding:0 .3rem}
-  .share-preview-img{width:100%;border:1px solid var(--muted);margin-bottom:1rem;display:block}
+  .share-preview-img{width:100%;border:1px solid var(--muted);margin-bottom:1rem;display:flex;flex-direction:column;justify-content:space-between}
   .share-modal-hint{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--muted);letter-spacing:.08em;text-align:center;margin-top:.6rem}
   footer{border-top:2px solid var(--ink);padding:.8rem 1.2rem;font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.08em;text-align:center;margin-top:2rem}
 </style>
@@ -209,8 +209,8 @@ function truncateWord(w){var d=w.definition.split(" ");var e=w.example.split(" "
   var catPrompt=currentCategory==='all'?'Pick any funny contemporary category (social media, dating, work culture, parenting, consumerism, wellness culture, tech)':'Category: '+currentCategory;
   var prompt='You are a satirical lexicographer inventing hilarious new English words for modern life. '+catPrompt+'.\nInvent ONE new comedic word capturing a specific painfully relatable modern experience. Keep definition under 20 words. Keep example sentence under 15 words.\nRespond ONLY with valid JSON no markdown no backticks:\n{"word":"WORDNAME","pos":"n.","pronunciation":"/phonetic/","etymology":"From root1 + root2","definition":"Witty definition, max 20 words, 1 sentence..","example":"Funny example sentence, max 15 words.","category":"category"}';
   try{
-    var word=await callAPI(prompt,500);word=truncateWord(word);
-    word=truncateWord(word);word=truncateWord(word);displayWord(word);addToArchive(word);
+    var word=await callAPI(prompt,500);
+    displayWord(word);addToArchive(word);
   }catch(err){
     console.error(err);errorState.style.display='block';
   }finally{
@@ -231,7 +231,7 @@ async function coinWordFromFeeling(){
   var hintLine=lastHint?'\nWord vibe: "'+lastHint+'"':'';
   var prompt='You are a satirical lexicographer. Invent the PERFECT new word for this feeling:\n"'+situation+'"'+hintLine+'\nRespond ONLY with valid JSON no markdown no backticks:\n{"word":"WORDNAME","pos":"n.","pronunciation":"/phonetic/","etymology":"From root1 + root2","definition":"Precise witty definition.","example":"Funny example sentence, max 15 words."}';
   try{
-    var word=await callAPI(prompt,500);word=truncateWord(word);
+    var word=await callAPI(prompt,500);
     word.humanCoined=true;coinedWord=word;
     showCoinedPreview(word);hint.textContent='';
   }catch(err){
