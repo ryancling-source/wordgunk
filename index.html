@@ -68,7 +68,7 @@
   .archive-card.human-coined{border-color:var(--gold)}
   .archive-card.human-coined::after{content:'✍';display:block;font-size:.65rem;color:var(--gold);margin-top:.4rem}
   .ornament{text-align:center;color:var(--gold);font-size:1rem;letter-spacing:.4rem;margin:1.2rem 0;opacity:.5}
-  #shareCardTarget{position:fixed;left:-9999px;top:0;width:1080px;background:var(--cream);padding:80px;font-family:'DM Serif Display',serif;color:var(--ink);border:8px solid var(--ink)}
+  #shareCardTarget{position:fixed;left:-9999px;top:0;width:1080px;background:var(--cream);padding:80px;font-family:'DM Serif Display',serif;color:var(--ink)}
   #shareCardTarget .sc-brand{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:.04em;margin-bottom:2rem;padding-bottom:1.2rem;border-bottom:4px solid var(--ink);display:flex;justify-content:space-between;align-items:baseline}
   #shareCardTarget .sc-brand span{color:var(--accent)}
   #shareCardTarget .sc-brand small{font-family:'DM Mono',monospace;font-size:.9rem;color:var(--muted);letter-spacing:.1em}
@@ -284,7 +284,7 @@ async function shareCurrentWord(){
   var shareBtn=document.querySelector('.share-bar .btn-accent');
   shareBtn.textContent='Generating...';shareBtn.disabled=true;
   try{
-    var canvas=await html2canvas(document.getElementById('shareCardTarget'),{scale:1,useCORS:true,backgroundColor:'#ede5d0',logging:false,width:1080,height:1620});
+    var canvas=await html2canvas(document.getElementById('shareCardTarget'),{scale:1,useCORS:true,backgroundColor:'#ede5d0',logging:false,width:1080,height:1350});
     shareCardDataUrl=canvas.toDataURL('image/png');
     document.getElementById('sharePreviewImg').src=shareCardDataUrl;
     document.getElementById('shareModal').classList.add('visible');
