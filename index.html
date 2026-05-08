@@ -68,17 +68,17 @@
   .archive-card.human-coined{border-color:var(--gold)}
   .archive-card.human-coined::after{content:'✍';display:block;font-size:.65rem;color:var(--gold);margin-top:.4rem}
   .ornament{text-align:center;color:var(--gold);font-size:1rem;letter-spacing:.4rem;margin:1.2rem 0;opacity:.5}
-  #shareCardTarget{position:fixed;left:-9999px;top:0;width:1080px;height:1920px;background:var(--cream);padding:80px 80px 60px;font-family:'DM Serif Display',serif;color:var(--ink);border:8px solid var(--ink);display:flex;flex-direction:column;justify-content:space-between}
-  #shareCardTarget .sc-brand{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:.04em;margin-bottom:1rem;padding-bottom:0.6rem;border-bottom:3px solid var(--ink);display:flex;justify-content:space-between;align-items:baseline}
+  #shareCardTarget{position:fixed;left:-9999px;top:0;width:1080px;height:1350px;background:var(--cream);padding:70px;font-family:'DM Serif Display',serif;color:var(--ink);display:flex;flex-direction:column;justify-content:flex-start;gap:0}
+  #shareCardTarget .sc-brand{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.04em;margin-bottom:0.6rem;padding-bottom:0.5rem;border-bottom:3px solid var(--ink);display:flex;justify-content:space-between;align-items:baseline}
   #shareCardTarget .sc-brand span{color:var(--accent)}
-  #shareCardTarget .sc-brand small{font-family:'DM Mono',monospace;font-size:.9rem;color:var(--muted);letter-spacing:.1em}
-  #shareCardTarget .sc-word{font-family:'Bebas Neue',sans-serif;font-size:7rem;letter-spacing:.02em;line-height:1;margin-bottom:0.2rem}
-  #shareCardTarget .sc-meta{font-family:'DM Mono',monospace;font-size:2rem;color:var(--gold);margin-bottom:0.6rem;display:flex;gap:1.5rem}
-  #shareCardTarget .sc-meta .pos{color:var(--muted);font-style:italic;font-family:'DM Serif Display',serif;font-size:1.3rem}
-  #shareCardTarget .sc-etymology{font-family:'DM Mono',monospace;font-size:2rem;color:var(--muted);border-left:5px solid var(--gold);padding-left:1rem;margin-bottom:0.8rem}
-  #shareCardTarget .sc-definition{font-size:3.2rem;line-height:1.4;margin-bottom:0.8rem}
-  #shareCardTarget .sc-example{font-style:italic;font-size:2.6rem;color:var(--muted);border-left:5px solid var(--ink);padding-left:1.5rem;line-height:1.4;margin-bottom:1rem}
-  #shareCardTarget .sc-footer{font-family:'DM Mono',monospace;font-size:1rem;color:var(--muted);letter-spacing:.1em;border-top:2px solid var(--ink);padding-top:1.2rem}
+  #shareCardTarget .sc-brand small{font-family:'DM Mono',monospace;font-size:.85rem;color:var(--muted);letter-spacing:.1em}
+  #shareCardTarget .sc-word{font-family:'Bebas Neue',sans-serif;font-size:8rem;letter-spacing:.02em;line-height:1;margin-bottom:0.3rem;margin-top:0.5rem}
+  #shareCardTarget .sc-meta{font-family:'DM Mono',monospace;font-size:1.6rem;color:var(--gold);margin-bottom:0.4rem;display:flex;gap:1rem;align-items:baseline}
+  #shareCardTarget .sc-meta .pos{color:var(--muted);font-style:italic;font-family:'DM Serif Display',serif;font-size:1.4rem}
+  #shareCardTarget .sc-etymology{font-family:'DM Mono',monospace;font-size:1.3rem;color:var(--muted);border-left:4px solid var(--gold);padding-left:0.8rem;margin-bottom:0.8rem;line-height:1.4}
+  #shareCardTarget .sc-definition{font-size:2.8rem;line-height:1.35;margin-bottom:0.8rem;font-weight:bold}
+  #shareCardTarget .sc-example{font-style:italic;font-size:2rem;color:var(--muted);border-left:4px solid var(--ink);padding-left:1rem;line-height:1.4;margin-bottom:0}
+  #shareCardTarget .sc-footer{font-family:'DM Mono',monospace;font-size:.9rem;color:var(--muted);letter-spacing:.1em;border-top:2px solid var(--ink);padding-top:0.8rem;margin-top:auto}
   .share-modal{display:none;position:fixed;inset:0;background:rgba(26,18,8,.85);z-index:1000;align-items:flex-end;justify-content:center;padding:1rem}
   .share-modal.visible{display:flex}
   .share-modal-inner{background:var(--paper);width:100%;max-width:480px;padding:1.5rem;border:2px solid var(--ink);animation:fadeSlideIn .3s ease}
