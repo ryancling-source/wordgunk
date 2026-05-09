@@ -76,11 +76,11 @@
   #shareCardTarget .sc-meta{font-family:'DM Mono',monospace;font-size:1.8rem;color:#c9952a;margin-bottom:1rem;display:flex;gap:1rem;align-items:baseline;flex-shrink:0}
   #shareCardTarget .sc-meta .pos{color:#7a6f5e;font-style:italic;font-family:'DM Serif Display',serif;font-size:1.6rem}
   #shareCardTarget .sc-rule-gold{border:none;border-top:2px solid #c9952a;margin:0 0 1rem;flex-shrink:0}
-  #shareCardTarget .sc-etymology{font-family:'DM Mono',monospace;font-size:1.3rem;color:#7a6f5e;border-left:4px solid #c9952a;padding-left:0.8rem;margin-bottom:1rem;line-height:1.4;flex-shrink:0}
+  #shareCardTarget .sc-etymology{font-family:'DM Mono',monospace;font-size:1.8rem;color:#7a6f5e;border-left:4px solid #c9952a;padding-left:0.8rem;margin-bottom:1rem;line-height:1.4;flex-shrink:0}
   #shareCardTarget .sc-rule-gold2{border:none;border-top:2px solid #c9952a;margin:0 0 1.2rem;flex-shrink:0}
   #shareCardTarget .sc-definition{font-size:2.8rem;line-height:1.4;font-weight:bold;color:#1a1208;margin-bottom:1.2rem;flex-shrink:0}
   #shareCardTarget .sc-rule-ink{border:none;border-top:1px solid #1a1208;opacity:0.2;margin:0 0 1rem;flex-shrink:0}
-  #shareCardTarget .sc-example{font-style:italic;font-size:2.2rem;color:#7a6f5e;line-height:1.5;flex-shrink:0}
+  #shareCardTarget .sc-example{font-style:italic;font-size:2.6rem;color:#7a6f5e;line-height:1.5;flex-shrink:0}
   #shareCardTarget .sc-footer{display:none}
   .share-modal{display:none;position:fixed;inset:0;background:rgba(26,18,8,.85);z-index:1000;align-items:flex-end;justify-content:center;padding:1rem}
   .share-modal.visible{display:flex}
@@ -287,7 +287,7 @@ async function shareCurrentWord(){
   var shareBtn=document.querySelector('.share-bar .btn-accent');
   shareBtn.textContent='Generating...';shareBtn.disabled=true;
   try{
-    var cardEl=document.getElementById("shareCardTarget");var cardHeight=cardEl.scrollHeight;var canvas=await html2canvas(document.getElementById('shareCardTarget'),{scale:1,useCORS:true,backgroundColor:'#ede5d0',logging:false,width:1080,height:cardHeight});
+    var cardEl=document.getElementById("shareCardTarget");var cardHeight=Math.max(cardEl.scrollHeight,1080);var canvas=await html2canvas(document.getElementById('shareCardTarget'),{scale:1,useCORS:true,backgroundColor:'#ede5d0',logging:false,width:1080,height:cardHeight});
     shareCardDataUrl=canvas.toDataURL('image/png');
     document.getElementById('sharePreviewImg').src=shareCardDataUrl;
     document.getElementById('shareModal').classList.add('visible');
