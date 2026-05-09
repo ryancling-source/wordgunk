@@ -3,61 +3,56 @@ import re
 with open('index.html', 'r') as f:
     html = f.read()
 
-# Fix shareCardTarget container
-old = "width:1080px;height:1350px;background:var(--cream);padding:70px;font-family:'DM Serif Display',serif;color:var(--ink);display:flex;flex-direction:column;justify-content:flex-start;gap:0}"
-new = "width:1080px;min-height:1080px;max-height:1350px;overflow:hidden;background:var(--cream);padding:70px;font-family:'DM Serif Display',serif;color:var(--ink);display:block}"
-html = html.replace(old, new)
+# Replace all shareCardTarget CSS with new clean version
+new_css = """  #shareCardTarget{position:fixed;left:-9999px;top:0;width:1080px;background:#f5efe3;padding:70px;font-family:'DM Serif Display',serif;color:#1a1208;display:flex;flex-direction:column;box-sizing:border-box}
+  #shareCardTarget .sc-brand{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.04em;padding-bottom:0.5rem;border-bottom:3px solid #1a1208;display:flex;justify-content:space-between;align-items:baseline;margin-bottom:1.2rem;flex-shrink:0}
+  #shareCardTarget .sc-brand span{color:#d4421a}
+  #shareCardTarget .sc-brand small{font-family:'DM Mono',monospace;font-size:.85rem;color:#7a6f5e;letter-spacing:.1em}
+  #shareCardTarget .sc-word{font-family:'Bebas Neue',sans-serif;font-size:8rem;letter-spacing:.02em;line-height:1;margin-bottom:0.3rem;flex-shrink:0}
+  #shareCardTarget .sc-meta{font-family:'DM Mono',monospace;font-size:1.8rem;color:#c9952a;margin-bottom:1rem;display:flex;gap:1rem;align-items:baseline;flex-shrink:0}
+  #shareCardTarget .sc-meta .pos{color:#7a6f5e;font-style:italic;font-family:'DM Serif Display',serif;font-size:1.6rem}
+  #shareCardTarget .sc-rule-gold{border:none;border-top:2px solid #c9952a;margin:0 0 1rem;flex-shrink:0}
+  #shareCardTarget .sc-etymology{font-family:'DM Mono',monospace;font-size:1.3rem;color:#7a6f5e;border-left:4px solid #c9952a;padding-left:0.8rem;margin-bottom:1rem;line-height:1.4;flex-shrink:0}
+  #shareCardTarget .sc-rule-gold2{border:none;border-top:2px solid #c9952a;margin:0 0 1.2rem;flex-shrink:0}
+  #shareCardTarget .sc-definition{font-size:2.8rem;line-height:1.4;font-weight:bold;color:#1a1208;margin-bottom:1.2rem;flex-shrink:0}
+  #shareCardTarget .sc-rule-ink{border:none;border-top:1px solid #1a1208;opacity:0.2;margin:0 0 1rem;flex-shrink:0}
+  #shareCardTarget .sc-example{font-style:italic;font-size:2.2rem;color:#7a6f5e;line-height:1.5;flex-shrink:0}
+  #shareCardTarget .sc-footer{display:none}"""
 
-# Tighter brand header
-html = html.replace(
-    "font-size:1.8rem;letter-spacing:.04em;margin-bottom:0.6rem;padding-bottom:0.5rem;border-bottom:3px solid var(--ink);display:flex;justify-content:space-between;align-items:baseline}",
-    "font-size:1.8rem;letter-spacing:.04em;margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:3px solid var(--ink);display:flex;justify-content:space-between;align-items:baseline}"
+html = re.sub(
+    r'  #shareCardTarget\{.*?#shareCardTarget \.sc-footer\{[^\n]+\}',
+    new_css,
+    html,
+    flags=re.DOTALL
 )
 
-# Word - good size, small gap below
-html = html.replace(
-    "font-size:8rem;letter-spacing:.02em;line-height:1;margin-bottom:0.3rem;margin-top:0.5rem}",
-    "font-size:8rem;letter-spacing:.02em;line-height:1;margin-bottom:0.4rem;margin-top:0.3rem}"
-)
+# Update share card HTML to add rule elements
+old_html = '''<div id="shareCardTarget">
+  <div class="sc-brand">WORD<span>GUNK</span><small>wordgunk.com</small></div>
+  <div class="sc-word" id="sc-word"></div>
+  <div class="sc-meta"><span class="pos" id="sc-pos"></span><span id="sc-pronunciation"></span></div>
+  <div class="sc-etymology" id="sc-etymology"></div>
+  <div class="sc-definition" id="sc-definition"></div>
+  <div class="sc-example" id="sc-example"></div>
+  <div class="sc-footer">wordgunk.com - New words for a broken world</div>
+</div>'''
 
-# Meta - pronunciation, tighter
-html = html.replace(
-    "font-size:1.6rem;color:var(--gold);margin-bottom:0.4rem;display:flex;gap:1rem;align-items:baseline}",
-    "font-size:1.6rem;color:var(--gold);margin-bottom:0.8rem;display:flex;gap:1rem;align-items:baseline}"
-)
+new_html = '''<div id="shareCardTarget">
+  <div class="sc-brand">WORD<span>GUNK</span><small>wordgunk.com</small></div>
+  <div class="sc-word" id="sc-word"></div>
+  <div class="sc-meta"><span class="pos" id="sc-pos"></span><span id="sc-pronunciation"></span></div>
+  <hr class="sc-rule-gold">
+  <div class="sc-etymology" id="sc-etymology"></div>
+  <hr class="sc-rule-gold2">
+  <div class="sc-definition" id="sc-definition"></div>
+  <hr class="sc-rule-ink">
+  <div class="sc-example" id="sc-example"></div>
+  <div class="sc-footer"></div>
+</div>'''
 
-# Etymology - more breathing room below
-html = html.replace(
-    "font-size:1.3rem;color:var(--muted);border-left:4px solid var(--gold);padding-left:0.8rem;margin-bottom:0.8rem;line-height:1.4}",
-    "font-size:1.3rem;color:var(--muted);border-left:4px solid var(--gold);padding-left:0.8rem;margin-bottom:1.8rem;line-height:1.4}"
-)
-
-# Definition - more space below
-html = html.replace(
-    "font-size:2.8rem;line-height:1.35;margin-bottom:0.8rem;font-weight:bold}",
-    "font-size:2.8rem;line-height:1.35;margin-bottom:1.5rem;font-weight:bold}"
-)
-
-# Example - good spacing
-html = html.replace(
-    "font-style:italic;font-size:2rem;color:var(--muted);border-left:4px solid var(--ink);padding-left:1rem;line-height:1.4;margin-bottom:0}",
-    "font-style:italic;font-size:2rem;color:var(--muted);border-left:4px solid var(--ink);padding-left:1rem;line-height:1.4;margin-bottom:0}"
-)
-
-# Hide footer completely
-html = html.replace(
-    "font-family:'DM Mono',monospace;font-size:.9rem;color:var(--muted);letter-spacing:.1em;border-top:2px solid var(--ink);padding-top:0.8rem;margin-top:auto}",
-    "display:none}"
-)
-
-# Fix canvas dimensions
-html = re.sub(r'width:1080(?:,height:\d+)?(?=\})', 'width:1080,height:1350', html)
-
-# Remove truncation calls
-html = html.replace('word=truncateWord(word);displayWord(word)', 'displayWord(word)')
-html = html.replace('word=truncateWord(word);word.humanCoined', 'word.humanCoined')
+html = html.replace(old_html, new_html)
 
 with open('index.html', 'w') as f:
     f.write(html)
 
-print("Done! Breathing room added, footer removed.")
+print("Done! Share card rebuilt with rule lines and top-aligned layout.")
