@@ -167,7 +167,13 @@
       <button class="share-modal-close" onclick="closeModal()">X</button>
     </div>
     <img class="share-preview-img" id="sharePreviewImg" src="" alt="Word card">
-    <button class="btn btn-accent" id="saveBtn" onclick="saveCard()">Save Image</button>
+    <div style="display:flex;gap:12px;align-items:center;margin-bottom:1rem">
+    <span style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted)">Colorway</span>
+    <button class="wc-swatch" data-theme="cream" onclick="applyTheme('cream');regenerateCard()" style="width:28px;height:28px;border-radius:50%;background:#f5efe3;border:2px solid #1a1208;cursor:pointer;transition:all 0.15s;box-shadow:0 0 0 2px #fff, 0 0 0 4px #f5efe3"></button>
+    <button class="wc-swatch" data-theme="ink" onclick="applyTheme('ink');regenerateCard()" style="width:28px;height:28px;border-radius:50%;background:#1a1208;border:2px solid #1a1208;cursor:pointer;transition:all 0.15s"></button>
+    <button class="wc-swatch" data-theme="red" onclick="applyTheme('red');regenerateCard()" style="width:28px;height:28px;border-radius:50%;background:#d4421a;border:2px solid #d4421a;cursor:pointer;transition:all 0.15s"></button>
+  </div>
+  <button class="btn btn-accent" id="saveBtn" onclick="saveCard()">Save Image</button>
     <div class="share-modal-hint">Save the image and post to your story. Tag #wordgunk</div>
   </div>
 </div>
@@ -184,6 +190,41 @@
 <script>
 var currentCategory='all',archive=[],coinedWord=null,lastSituation='',lastHint='',currentWord=null,shareCardDataUrl=null;
 
+var wcThemes={
+  cream:{bg:'#f5efe3',text:'#1a1208',muted:'#7a6f5e',gold:'#c9952a',brand:'#1a1208',brandAccent:'#d4421a',rule:'#c9952a',ruleInk:'#1a1208',url:'#7a6f5e',canvasBg:'#f5efe3'},
+  ink:{bg:'#1a1208',text:'#f5efe3',muted:'#ede5d0',gold:'#c9952a',brand:'#f5efe3',brandAccent:'#d4421a',rule:'#c9952a',ruleInk:'#f5efe3',url:'#7a6f5e',canvasBg:'#1a1208'},
+  red:{bg:'#d4421a',text:'#1a1208',muted:'#ede5d0',gold:'#c9952a',brand:'#f5efe3',brandAccent:'#f5efe3',rule:'#c9952a',ruleInk:'#1a1208',url:'#ede5d0',canvasBg:'#d4421a'}
+};
+var wcCurrentTheme='cream';
+
+function applyTheme(key){
+  wcCurrentTheme=key;
+  var t=wcThemes[key];
+  var sc=document.getElementById('shareCardTarget');
+  sc.style.background=t.bg;
+  sc.querySelectorAll('.sc-word,.sc-definition').forEach(function(el){el.style.color=t.text;});
+  sc.querySelectorAll('.sc-meta').forEach(function(el){el.style.color=t.gold;});
+  sc.querySelectorAll('.sc-etymology,.sc-example').forEach(function(el){el.style.color=t.muted;});
+  sc.querySelectorAll('.sc-brand').forEach(function(el){el.style.borderBottomColor=t.text;el.style.color=t.brand;});
+  sc.querySelectorAll('.sc-brand span').forEach(function(el){el.style.color=t.brandAccent;});
+  sc.querySelectorAll('.sc-brand small').forEach(function(el){el.style.color=t.url;});
+  sc.querySelectorAll('.sc-rule-gold,.sc-rule-gold2').forEach(function(el){el.style.borderTopColor=t.rule;});
+  sc.querySelectorAll('.sc-rule-ink').forEach(function(el){el.style.borderTopColor=t.ruleInk;});
+  sc.querySelectorAll('.sc-etymology').forEach(function(el){el.style.borderLeftColor=t.rule;});
+  document.querySelectorAll('.wc-swatch').forEach(function(s){
+    s.style.boxShadow=s.dataset.theme===key?'0 0 0 2px #fff, 0 0 0 4px '+t.bg:'none';
+    s.style.transform=s.dataset.theme===key?'scale(1.2)':'scale(1)';
+  });
+}
+
+async function regenerateCard(){
+  var t=wcThemes[wcCurrentTheme];
+  var cardEl=document.getElementById('shareCardTarget');
+  var cardHeight=Math.max(cardEl.scrollHeight,1080);
+  var canvas=await html2canvas(cardEl,{scale:1,useCORS:true,backgroundColor:t.canvasBg,logging:false,width:1080,height:cardHeight});
+  shareCardDataUrl=canvas.toDataURL('image/png');
+  document.getElementById('sharePreviewImg').src=shareCardDataUrl;
+}
 function switchTab(name,el){
   document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active')});
   document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active')});
@@ -278,6 +319,7 @@ function resetCoinForm(){
 
 async function shareCurrentWord(){
   if(!currentWord)return;
+  applyTheme('cream');
   document.getElementById('sc-word').textContent=currentWord.word;
   document.getElementById('sc-pos').textContent=currentWord.pos;
   document.getElementById('sc-pronunciation').textContent=currentWord.pronunciation||'';
@@ -287,7 +329,7 @@ async function shareCurrentWord(){
   var shareBtn=document.querySelector('.share-bar .btn-accent');
   shareBtn.textContent='Generating...';shareBtn.disabled=true;
   try{
-    var cardEl=document.getElementById("shareCardTarget");var cardHeight=Math.max(cardEl.scrollHeight,1080);var canvas=await html2canvas(document.getElementById('shareCardTarget'),{scale:1,useCORS:true,backgroundColor:'#f5efe3',logging:false,width:1080,height:cardHeight});
+    var cardEl=document.getElementById("shareCardTarget");var cardHeight=Math.max(cardEl.scrollHeight,1080);var t=wcThemes[wcCurrentTheme];var canvas=await html2canvas(document.getElementById('shareCardTarget'),{scale:1,useCORS:true,backgroundColor:t.canvasBg,logging:false,width:1080,height:cardHeight});
     shareCardDataUrl=canvas.toDataURL('image/png');
     document.getElementById('sharePreviewImg').src=shareCardDataUrl;
     document.getElementById('shareModal').classList.add('visible');
