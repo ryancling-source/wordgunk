@@ -17,9 +17,9 @@
   .header-right{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--muted);text-align:right;line-height:1.8;letter-spacing:.08em}
   .main-container{max-width:680px;margin:0 auto;padding:1.5rem 1.2rem}
   .tabs{display:grid;grid-template-columns:1fr 1fr 1fr;border:2px solid var(--ink);margin-bottom:1.5rem}
-  .tab{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.08em;padding:.8rem;text-align:center;cursor:pointer;background:var(--paper);color:var(--muted);border:none;transition:all .15s}
+  .tab{font-family:'Bebas Neue',sans-serif;font-size:.85rem;letter-spacing:.06em;padding:.8rem .4rem;text-align:center;cursor:pointer;background:var(--paper);color:var(--muted);border:none;transition:all .15s;white-space:nowrap}
   .tab.active{background:var(--ink);color:var(--paper)}
-  .tab:first-child{border-right:2px solid var(--ink)}
+  .tab:not(:last-child){border-right:2px solid var(--ink)}
   .panel{display:none}.panel.active{display:block}
   .category-pills{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem}
   .pill{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;padding:.3rem .7rem;border:1.5px solid var(--muted);color:var(--muted);cursor:pointer;transition:all .15s;background:transparent;border-radius:2px}
