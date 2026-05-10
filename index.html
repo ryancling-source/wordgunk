@@ -60,7 +60,7 @@
   .archive-section{border-top:2px solid var(--ink);padding-top:1.5rem;margin-top:.5rem}
   .archive-header{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:.05em;margin-bottom:1rem;display:flex;align-items:center;gap:.8rem}
   .archive-header::after{content:'';flex:1;height:1px;background:var(--ink);opacity:.15}
-  .archive-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.7rem}
+  .archive-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.7rem}@media(max-width:600px){.archive-grid{grid-template-columns:1fr 1fr}}
   .archive-card{border:1.5px solid var(--ink);padding:1rem;cursor:pointer;transition:all .15s;background:var(--paper);animation:fadeSlideIn .4s ease forwards}
   .archive-card:active{background:var(--cream);transform:scale(.98)}
   .archive-card .word-title{font-size:1.4rem}.archive-card .word-pos{font-size:.8rem}
