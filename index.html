@@ -110,6 +110,7 @@
       <button class="pill" onclick="setCategory(this,'work')">Work</button>
       <button class="pill" onclick="setCategory(this,'parenting')">Parenting</button>
       <button class="pill" onclick="setCategory(this,'consumerism')">Money</button>
+      <button class="pill" onclick="setCategory(this,'culture')">Culture</button>
     </div>
     <div class="error-state" id="errorState">The dictionary is sulking. Try again.</div>
     <div class="loading-state" id="loadingState">CONSULTING THE LINGUISTS <span class="loading-dots"></span></div>
@@ -167,6 +168,7 @@
       <button class="pill" onclick="filterGallery(this,'work')">Work</button>
       <button class="pill" onclick="filterGallery(this,'parenting')">Parenting</button>
       <button class="pill" onclick="filterGallery(this,'consumerism')">Money</button>
+      <button class="pill" onclick="filterGallery(this,'culture')">Culture</button>
     </div><div class="loading-state" id="galleryLoading">LOADING <span class="loading-dots"></span></div><div class="archive-grid" id="galleryGrid"></div><button class="btn btn-outline" id="loadMoreBtn" onclick="loadMore()" style="margin-top:1rem;display:none">Load More</button></div>
 </div>
 <div class="share-modal" id="shareModal" onclick="closeShareModal(event)">
@@ -259,7 +261,7 @@ function truncateWord(w){var d=w.definition.split(" ");var e=w.example.split(" "
   var errorState=document.getElementById('errorState');
   btn.disabled=true;btn.textContent='...';
   loading.style.display='block';featured.style.opacity='0.3';errorState.style.display='none';
-  var catPrompt=currentCategory==='all'?'Pick any funny contemporary category (social media, dating, work culture, parenting, consumerism, wellness culture, tech)':'Category: '+currentCategory;
+  var catPrompt=currentCategory==='all'?'Pick any funny contemporary category (social media, dating, work culture, parenting, consumerism, wellness culture, tech, culture, celebrity, sports, pop culture)':'Category: '+currentCategory;
   var recentWords=archive.slice(0,5).map(function(w){return w.word}).join(', ')||'none';
 var prompt='You are a satirical lexicographer inventing hilarious new English words for modern life. '+catPrompt+'.\nInvent ONE new comedic word. RULES: Do NOT use influenza, zoom, or any variation of existing words. Do NOT repeat or rhyme with these recent words: '+recentWords+'. Pick a completely different concept, root word, and theme each time. Keep definition under 20 words. Keep example sentence under 15 words.\nRespond ONLY with valid JSON no markdown no backticks:\n{"word":"WORDNAME","pos":"n.","pronunciation":"/phonetic/","etymology":"From root1 + root2 (keep under 8 words total)","definition":"Witty definition, max 20 words, 1 sentence..","example":"Funny example sentence, max 15 words.","category":"category"}';
   try{
