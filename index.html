@@ -252,7 +252,8 @@ function truncateWord(w){var d=w.definition.split(" ");var e=w.example.split(" "
   btn.disabled=true;btn.textContent='...';
   loading.style.display='block';featured.style.opacity='0.3';errorState.style.display='none';
   var catPrompt=currentCategory==='all'?'Pick any funny contemporary category (social media, dating, work culture, parenting, consumerism, wellness culture, tech)':'Category: '+currentCategory;
-  var prompt='You are a satirical lexicographer inventing hilarious new English words for modern life. '+catPrompt+'.\nInvent ONE new comedic word capturing a specific painfully relatable modern experience. Keep definition under 20 words. Keep example sentence under 15 words.\nRespond ONLY with valid JSON no markdown no backticks:\n{"word":"WORDNAME","pos":"n.","pronunciation":"/phonetic/","etymology":"From root1 + root2 (keep under 8 words total)","definition":"Witty definition, max 20 words, 1 sentence..","example":"Funny example sentence, max 15 words.","category":"category"}';
+  var recentWords=archive.slice(0,5).map(function(w){return w.word}).join(', ')||'none';
+var prompt='You are a satirical lexicographer inventing hilarious new English words for modern life. '+catPrompt+'.\nInvent ONE new comedic word. RULES: Do NOT use influenza, zoom, or any variation of existing words. Do NOT repeat or rhyme with these recent words: '+recentWords+'. Pick a completely different concept, root word, and theme each time. Keep definition under 20 words. Keep example sentence under 15 words.\nRespond ONLY with valid JSON no markdown no backticks:\n{"word":"WORDNAME","pos":"n.","pronunciation":"/phonetic/","etymology":"From root1 + root2 (keep under 8 words total)","definition":"Witty definition, max 20 words, 1 sentence..","example":"Funny example sentence, max 15 words.","category":"category"}';
   try{
     var word=await callAPI(prompt,500);
     displayWord(word);addToArchive(word);saveWord(word);
