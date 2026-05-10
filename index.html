@@ -435,12 +435,18 @@ async function loadMore(){
     document.getElementById('loadMoreBtn').style.display=words.length===50?'block':'none';
   }catch(e){console.error(e);}
 }
+var galleryWords=[];
 function renderGallery(words,append){
   var grid=document.getElementById('galleryGrid');
-  var html=words.map(function(w,i){
-    return '<div class="archive-card" style="animation-delay:'+(i*0.04)+'s"><div class="word-main"><div class="word-title">'+w.word+'</div><div class="word-pos">'+w.pos+'</div></div><div class="word-definition">'+w.definition+'</div></div>';
+  if(!append)galleryWords=words;else galleryWords=galleryWords.concat(words);
+  var html=galleryWords.map(function(w,i){
+    return '<div class="archive-card" style="animation-delay:'+(i*0.04)+'s;cursor:pointer" onclick="galleryWordClick('+i+')"><div class="word-main"><div class="word-title">'+w.word+'</div><div class="word-pos">'+w.pos+'</div></div><div class="word-definition">'+w.definition+'</div></div>';
   }).join('');
-  if(append)grid.innerHTML+=html;else grid.innerHTML=html;
+  grid.innerHTML=html;
+}
+function galleryWordClick(i){
+  displayWord(galleryWords[i]);
+  switchTab('discover',document.querySelectorAll('.tab')[0]);
 }
 
 
