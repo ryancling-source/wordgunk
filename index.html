@@ -438,7 +438,7 @@ async function loadMore(){
 function renderGallery(words,append){
   var grid=document.getElementById('galleryGrid');
   var html=words.map(function(w,i){
-    return '<div class="archive-card" style="animation-delay:'+(i*0.04)+'s;cursor:pointer" onclick="displayWord('+JSON.stringify(w).replace(/"/g,'&quot;')+');switchTab('discover',document.querySelectorAll('.tab')[0])"><div class="word-main"><div class="word-title">'+w.word+'</div><div class="word-pos">'+w.pos+'</div></div><div class="word-definition">'+w.definition+'</div></div>';
+    return '<div class="archive-card" style="animation-delay:'+(i*0.04)+'s"><div class="word-main"><div class="word-title">'+w.word+'</div><div class="word-pos">'+w.pos+'</div></div><div class="word-definition">'+w.definition+'</div></div>';
   }).join('');
   if(append)grid.innerHTML+=html;else grid.innerHTML=html;
 }
