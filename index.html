@@ -159,7 +159,15 @@
     </div>
     <div class="success-flash" id="successFlash">Word added. Legend.</div>
   </div>
-<div class="panel" id="panel-gallery"><div class="archive-header">The Full Dictionary</div><div class="loading-state" id="galleryLoading">LOADING <span class="loading-dots"></span></div><div class="archive-grid" id="galleryGrid"></div><button class="btn btn-outline" id="loadMoreBtn" onclick="loadMore()" style="margin-top:1rem;display:none">Load More</button></div>
+<div class="panel" id="panel-gallery"><div class="archive-header">The Full Dictionary</div>
+    <div class="category-pills" id="galleryPills">
+      <button class="pill active" onclick="filterGallery(this,'all')">All</button>
+      <button class="pill" onclick="filterGallery(this,'social media')">Social</button>
+      <button class="pill" onclick="filterGallery(this,'dating')">Dating</button>
+      <button class="pill" onclick="filterGallery(this,'work')">Work</button>
+      <button class="pill" onclick="filterGallery(this,'parenting')">Parenting</button>
+      <button class="pill" onclick="filterGallery(this,'consumerism')">Money</button>
+    </div><div class="loading-state" id="galleryLoading">LOADING <span class="loading-dots"></span></div><div class="archive-grid" id="galleryGrid"></div><button class="btn btn-outline" id="loadMoreBtn" onclick="loadMore()" style="margin-top:1rem;display:none">Load More</button></div>
 </div>
 <div class="share-modal" id="shareModal" onclick="closeShareModal(event)">
   <div class="share-modal-inner">
@@ -444,6 +452,18 @@ function renderGallery(words,append){
     return '<div class="archive-card" style="animation-delay:'+(i*0.04)+'s;cursor:pointer" onclick="galleryWordClick('+i+')"><div class="word-main"><div class="word-title">'+w.word+'</div><div class="word-pos">'+w.pos+'</div></div><div class="word-definition">'+w.definition+'</div></div>';
   }).join('');
   grid.innerHTML=html;
+}
+var galleryFilter='all';
+function filterGallery(el,cat){
+  galleryFilter=cat;
+  document.querySelectorAll('#galleryPills .pill').forEach(function(p){p.classList.remove('active')});
+  el.classList.add('active');
+  var filtered=cat==='all'?galleryWords:galleryWords.filter(function(w){return (w.category||'').toLowerCase().indexOf(cat)>-1});
+  var grid=document.getElementById('galleryGrid');
+  grid.innerHTML=filtered.map(function(w,i){
+    var idx=galleryWords.indexOf(w);
+    return '<div class="archive-card" style="animation-delay:'+(i*0.04)+'s;cursor:pointer" onclick="galleryWordClick('+idx+')"><div class="word-main"><div class="word-title">'+w.word+'</div><div class="word-pos">'+w.pos+'</div></div><div class="word-definition">'+w.definition+'</div></div>';
+  }).join('');
 }
 function galleryWordClick(i){
   displayWord(galleryWords[i]);
