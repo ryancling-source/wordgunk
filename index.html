@@ -341,7 +341,7 @@ async function shareCurrentWord(){
   var shareBtn=document.querySelector('.share-bar .btn-accent');
   shareBtn.textContent='Generating...';shareBtn.disabled=true;
   try{
-    var cardEl=document.getElementById("shareCardTarget");var cardHeight=Math.max(cardEl.scrollHeight,1080);var t=wcThemes[wcCurrentTheme];var canvas=await html2canvas(document.getElementById('shareCardTarget'),{scale:1,useCORS:true,backgroundColor:t.canvasBg,logging:false,width:1080,height:cardHeight});
+    var cardEl=document.getElementById("shareCardTarget");var t=wcThemes[wcCurrentTheme];var canvas=await html2canvas(document.getElementById('shareCardTarget'),{scale:1,useCORS:true,backgroundColor:t.canvasBg,logging:false,width:1080,height:cardEl.scrollHeight});
     shareCardDataUrl=canvas.toDataURL('image/png');
     document.getElementById('sharePreviewImg').src=shareCardDataUrl;
     document.getElementById('shareModal').classList.add('visible');
