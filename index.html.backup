@@ -8,499 +8,101 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
-  :root {
-    --ink: #1a1208;
-    --paper: #f5efe3;
-    --cream: #ede5d0;
-    --accent: #d4421a;
-    --gold: #c9952a;
-    --muted: #7a6f5e;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-  body {
-    background: var(--paper);
-    color: var(--ink);
-    font-family: 'DM Serif Display', serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-    padding-bottom: 4rem;
-  }
-
-  /* ── HEADER ── */
-  header {
-    border-bottom: 3px solid var(--ink);
-    padding: 1rem 1.2rem 0.8rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .masthead {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(2.4rem, 12vw, 5rem);
-    letter-spacing: 0.02em;
-    line-height: 1;
-  }
-  .masthead span { color: var(--accent); }
-  .header-right {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    color: var(--muted);
-    text-align: right;
-    line-height: 1.8;
-    letter-spacing: 0.08em;
-  }
-
-  /* ── MAIN ── */
-  .main-container {
-    max-width: 680px;
-    margin: 0 auto;
-    padding: 1.5rem 1.2rem;
-  }
-
-  /* ── TABS ── */
-  .tabs {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    border: 2px solid var(--ink);
-    margin-bottom: 1.5rem;
-  }
-  .tab {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1rem;
-    letter-spacing: 0.08em;
-    padding: 0.8rem;
-    text-align: center;
-    cursor: pointer;
-    background: var(--paper);
-    color: var(--muted);
-    border: none;
-    transition: all 0.15s;
-  }
-  .tab.active { background: var(--ink); color: var(--paper); }
-  .tab:first-child { border-right: 2px solid var(--ink); }
-
-  /* ── PANELS ── */
-  .panel { display: none; }
-  .panel.active { display: block; }
-
-  /* ── CATEGORY PILLS ── */
-  .category-pills {
-    display: flex;
-    gap: 0.4rem;
-    flex-wrap: wrap;
-    margin-bottom: 1rem;
-  }
-  .pill {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.62rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 0.3rem 0.7rem;
-    border: 1.5px solid var(--muted);
-    color: var(--muted);
-    cursor: pointer;
-    transition: all 0.15s;
-    background: transparent;
-    border-radius: 2px;
-  }
-  .pill.active { border-color: var(--accent); color: var(--accent); }
-
-  /* ── BUTTONS ── */
-  .btn {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1rem;
-    letter-spacing: 0.08em;
-    padding: 0.85rem 1.5rem;
-    border: 2px solid var(--ink);
-    background: var(--ink);
-    color: var(--paper);
-    cursor: pointer;
-    transition: all 0.15s;
-    display: inline-block;
-    text-align: center;
-    width: 100%;
-  }
-  .btn:active { opacity: 0.8; transform: scale(0.98); }
-  .btn:disabled { opacity: 0.45; cursor: not-allowed; }
-  .btn-outline { background: transparent; color: var(--ink); }
-  .btn-gold { background: var(--gold); border-color: var(--gold); color: var(--paper); }
-  .btn-accent { background: var(--accent); border-color: var(--accent); color: var(--paper); }
-  .btn-row { display: flex; gap: 0.6rem; }
-  .btn-row .btn { flex: 1; font-size: 0.85rem; padding: 0.75rem 0.5rem; }
-
-  /* ── FEATURED WORD CARD ── */
-  @keyframes fadeSlideIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .featured-word {
-    border: 2px solid var(--ink);
-    padding: 1.8rem 1.5rem;
-    margin-bottom: 1rem;
-    position: relative;
-    background: var(--cream);
-    animation: fadeSlideIn 0.5s ease forwards;
-  }
-  .featured-label {
-    position: absolute;
-    top: -0.7rem;
-    left: 1.2rem;
-    background: var(--accent);
-    color: var(--paper);
-    font-family: 'DM Mono', monospace;
-    font-size: 0.58rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    padding: 0.15rem 0.5rem;
-  }
-  .word-entry { display: grid; gap: 0.9rem; }
-  .word-main { display: flex; align-items: baseline; gap: 0.8rem; flex-wrap: wrap; }
-  .word-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(2.2rem, 10vw, 4rem);
-    letter-spacing: 0.02em;
-    line-height: 1;
-  }
-  .word-pos { font-style: italic; font-size: 0.95rem; color: var(--muted); }
-  .word-pronunciation {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--gold);
-    letter-spacing: 0.05em;
-  }
-  .word-etymology {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.68rem;
-    color: var(--muted);
-    border-left: 3px solid var(--gold);
-    padding-left: 0.7rem;
-  }
-  .word-definition { font-size: 1.1rem; line-height: 1.55; }
-  .word-example {
-    font-style: italic;
-    font-size: 0.95rem;
-    color: var(--muted);
-    border-left: 3px solid var(--ink);
-    padding-left: 0.9rem;
-    line-height: 1.55;
-  }
-  .word-example::before { content: '\201C'; color: var(--accent); }
-  .word-example::after { content: '\201D'; color: var(--accent); }
-
-  /* ── SHARE BUTTON ── */
-  .share-bar {
-    display: flex;
-    gap: 0.6rem;
-    margin-bottom: 1.5rem;
-  }
-  .share-bar .btn { font-size: 0.9rem; padding: 0.8rem; }
-
-  /* ── LOADING / ERROR ── */
-  .loading-state {
-    display: none;
-    text-align: center;
-    padding: 2.5rem 1rem;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-  }
-  .loading-dots::after {
-    content: '...';
-    animation: dots 1.2s steps(4, end) infinite;
-  }
-  @keyframes dots {
-    0%, 20% { content: ''; }
-    40% { content: '.'; }
-    60% { content: '..'; }
-    80%, 100% { content: '...'; }
-  }
-  .error-state {
-    display: none;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--accent);
-    padding: 0.8rem;
-    border: 1px solid var(--accent);
-    margin-bottom: 1rem;
-  }
-
-  /* ── COIN FORM ── */
-  .form-group { display: flex; flex-direction: column; gap: 0.3rem; margin-bottom: 1rem; }
-  .form-group label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-  .form-group textarea,
-  .form-group input {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1rem;
-    padding: 0.75rem 0.9rem;
-    border: 1.5px solid var(--muted);
-    background: var(--paper);
-    color: var(--ink);
-    outline: none;
-    transition: border-color 0.15s;
-    width: 100%;
-    resize: vertical;
-    border-radius: 0;
-    -webkit-appearance: none;
-  }
-  .form-group textarea:focus,
-  .form-group input:focus { border-color: var(--ink); }
-  .form-group textarea { min-height: 100px; }
-
-  .coined-preview {
-    background: var(--cream);
-    border: 2px solid var(--gold);
-    padding: 1.5rem;
-    margin-bottom: 1rem;
-    position: relative;
-    animation: fadeSlideIn 0.4s ease forwards;
-  }
-  .coined-preview::before {
-    content: 'AI COINED';
-    position: absolute;
-    top: -0.65rem;
-    left: 1rem;
-    background: var(--gold);
-    color: var(--paper);
-    font-family: 'DM Mono', monospace;
-    font-size: 0.58rem;
-    letter-spacing: 0.18em;
-    padding: 0.12rem 0.45rem;
-  }
-  .coined-preview .word-title { font-size: clamp(1.8rem, 8vw, 3rem); }
-
-  .coin-hint {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--muted);
-    font-style: italic;
-    margin-top: 0.5rem;
-    min-height: 1em;
-  }
-  .success-flash {
-    display: none;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--gold);
-    letter-spacing: 0.1em;
-    padding: 0.5rem 0;
-    animation: fadeSlideIn 0.3s ease;
-  }
-
-  /* ── ARCHIVE ── */
-  .archive-section { border-top: 2px solid var(--ink); padding-top: 1.5rem; margin-top: 0.5rem; }
-  .archive-header {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.2rem;
-    letter-spacing: 0.05em;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-  }
-  .archive-header::after { content: ''; flex: 1; height: 1px; background: var(--ink); opacity: 0.15; }
-  .archive-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; }
-  .archive-card {
-    border: 1.5px solid var(--ink);
-    padding: 1rem;
-    cursor: pointer;
-    transition: all 0.15s;
-    background: var(--paper);
-    animation: fadeSlideIn 0.4s ease forwards;
-  }
-  .archive-card:active { background: var(--cream); transform: scale(0.98); }
-  .archive-card .word-title { font-size: 1.4rem; }
-  .archive-card .word-pos { font-size: 0.8rem; }
-  .archive-card .word-definition {
-    font-size: 0.78rem;
-    margin-top: 0.3rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    color: var(--muted);
-  }
-  .archive-card.human-coined { border-color: var(--gold); }
-  .archive-card.human-coined::after {
-    content: '✍';
-    display: block;
-    font-size: 0.65rem;
-    color: var(--gold);
-    margin-top: 0.4rem;
-  }
-
-  .ornament { text-align: center; color: var(--gold); font-size: 1rem; letter-spacing: 0.4rem; margin: 1.2rem 0; opacity: 0.5; }
-
-  /* ── SHARE CARD (off-screen render target) ── */
-  #shareCardTarget {
-    position: fixed;
-    left: -9999px;
-    top: 0;
-    width: 1080px;
-    background: var(--cream);
-    padding: 80px;
-    font-family: 'DM Serif Display', serif;
-    color: var(--ink);
-    border: 8px solid var(--ink);
-  }
-  #shareCardTarget .sc-brand {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2.2rem;
-    letter-spacing: 0.04em;
-    margin-bottom: 2rem;
-    padding-bottom: 1.2rem;
-    border-bottom: 4px solid var(--ink);
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-  }
-  #shareCardTarget .sc-brand span { color: var(--accent); }
-  #shareCardTarget .sc-brand small {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.9rem;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-  }
-  #shareCardTarget .sc-word {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 7rem;
-    letter-spacing: 0.02em;
-    line-height: 1;
-    margin-bottom: 0.3rem;
-  }
-  #shareCardTarget .sc-meta {
-    font-family: 'DM Mono', monospace;
-    font-size: 1.1rem;
-    color: var(--gold);
-    margin-bottom: 1.5rem;
-    display: flex;
-    gap: 1.5rem;
-  }
-  #shareCardTarget .sc-meta .pos { color: var(--muted); font-style: italic; font-family: 'DM Serif Display', serif; font-size: 1.3rem; }
-  #shareCardTarget .sc-etymology {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.95rem;
-    color: var(--muted);
-    border-left: 5px solid var(--gold);
-    padding-left: 1rem;
-    margin-bottom: 2rem;
-  }
-  #shareCardTarget .sc-definition {
-    font-size: 2.2rem;
-    line-height: 1.5;
-    margin-bottom: 2rem;
-  }
-  #shareCardTarget .sc-example {
-    font-style: italic;
-    font-size: 1.7rem;
-    color: var(--muted);
-    border-left: 5px solid var(--ink);
-    padding-left: 1.5rem;
-    line-height: 1.5;
-    margin-bottom: 3rem;
-  }
-  #shareCardTarget .sc-footer {
-    font-family: 'DM Mono', monospace;
-    font-size: 1rem;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-    border-top: 2px solid var(--ink);
-    padding-top: 1.2rem;
-  }
-
-  /* ── SHARE MODAL ── */
-  .share-modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(26,18,8,0.85);
-    z-index: 1000;
-    align-items: flex-end;
-    justify-content: center;
-    padding: 1rem;
-  }
-  .share-modal.visible { display: flex; }
-  .share-modal-inner {
-    background: var(--paper);
-    width: 100%;
-    max-width: 480px;
-    padding: 1.5rem;
-    border: 2px solid var(--ink);
-    animation: fadeSlideIn 0.3s ease;
-  }
-  .share-modal-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.3rem;
-    letter-spacing: 0.05em;
-    margin-bottom: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .share-modal-close {
-    font-family: 'DM Mono', monospace;
-    font-size: 1.2rem;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--muted);
-    padding: 0 0.3rem;
-  }
-  .share-preview-img {
-    width: 100%;
-    border: 1px solid var(--muted);
-    margin-bottom: 1rem;
-    display: block;
-  }
-  .share-modal-hint {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--muted);
-    letter-spacing: 0.08em;
-    text-align: center;
-    margin-top: 0.6rem;
-  }
-
-  footer {
-    border-top: 2px solid var(--ink);
-    padding: 0.8rem 1.2rem;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.58rem;
-    color: var(--muted);
-    letter-spacing: 0.08em;
-    text-align: center;
-    margin-top: 2rem;
-  }
+  :root{--ink:#1a1208;--paper:#f5efe3;--cream:#ede5d0;--accent:#d4421a;--gold:#c9952a;--muted:#7a6f5e}
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{background:var(--paper);color:var(--ink);font-family:'DM Serif Display',serif;min-height:100vh;overflow-x:hidden;padding-bottom:4rem}
+  header{border-bottom:3px solid var(--ink);padding:1rem 1.2rem .8rem;display:flex;align-items:center;justify-content:space-between}
+  .masthead{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.4rem,12vw,5rem);letter-spacing:.02em;line-height:1}
+  .masthead span{color:var(--accent)}
+  .header-right{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--muted);text-align:right;line-height:1.8;letter-spacing:.08em}
+  .main-container{max-width:680px;margin:0 auto;padding:1.5rem 1.2rem}
+  .tabs{display:grid;grid-template-columns:1fr 1fr;border:2px solid var(--ink);margin-bottom:1.5rem}
+  .tab{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.08em;padding:.8rem;text-align:center;cursor:pointer;background:var(--paper);color:var(--muted);border:none;transition:all .15s}
+  .tab.active{background:var(--ink);color:var(--paper)}
+  .tab:first-child{border-right:2px solid var(--ink)}
+  .panel{display:none}.panel.active{display:block}
+  .category-pills{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem}
+  .pill{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;padding:.3rem .7rem;border:1.5px solid var(--muted);color:var(--muted);cursor:pointer;transition:all .15s;background:transparent;border-radius:2px}
+  .pill.active{border-color:var(--accent);color:var(--accent)}
+  .btn{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.08em;padding:.85rem 1.5rem;border:2px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer;transition:all .15s;display:inline-block;text-align:center;width:100%}
+  .btn:active{opacity:.8;transform:scale(.98)}.btn:disabled{opacity:.45;cursor:not-allowed}
+  .btn-outline{background:transparent;color:var(--ink)}
+  .btn-gold{background:var(--gold);border-color:var(--gold);color:var(--paper)}
+  .btn-accent{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+  .btn-row{display:flex;gap:.6rem}.btn-row .btn{flex:1;font-size:.85rem;padding:.75rem .5rem}
+  @keyframes fadeSlideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  .featured-word{border:2px solid var(--ink);padding:1.8rem 1.5rem;margin-bottom:1rem;position:relative;background:var(--cream);animation:fadeSlideIn .5s ease forwards}
+  .featured-label{position:absolute;top:-.7rem;left:1.2rem;background:var(--accent);color:var(--paper);font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;padding:.15rem .5rem}
+  .word-entry{display:grid;gap:.9rem}
+  .word-main{display:flex;align-items:baseline;gap:.8rem;flex-wrap:wrap}
+  .word-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,10vw,4rem);letter-spacing:.02em;line-height:1}
+  .word-pos{font-style:italic;font-size:.95rem;color:var(--muted)}
+  .word-pronunciation{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--gold);letter-spacing:.05em}
+  .word-etymology{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--muted);border-left:3px solid var(--gold);padding-left:.7rem}
+  .word-definition{font-size:1.1rem;line-height:1.55}
+  .word-example{font-style:italic;font-size:.95rem;color:var(--muted);border-left:3px solid var(--ink);padding-left:.9rem;line-height:1.55}
+  .word-example::before{content:'\201C';color:var(--accent)}.word-example::after{content:'\201D';color:var(--accent)}
+  .share-bar{display:flex;gap:.6rem;margin-bottom:1.5rem}.share-bar .btn{font-size:.9rem;padding:.8rem}
+  .loading-state{display:none;text-align:center;padding:2.5rem 1rem;font-family:'DM Mono',monospace;font-size:.75rem;color:var(--muted);letter-spacing:.1em}
+  .loading-dots::after{content:'...';animation:dots 1.2s steps(4,end) infinite}
+  @keyframes dots{0%,20%{content:''}40%{content:'.'}60%{content:'..'}80%,100%{content:'...'}}
+  .error-state{display:none;font-family:'DM Mono',monospace;font-size:.75rem;color:var(--accent);padding:.8rem;border:1px solid var(--accent);margin-bottom:1rem}
+  .form-group{display:flex;flex-direction:column;gap:.3rem;margin-bottom:1rem}
+  .form-group label{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .form-group textarea,.form-group input{font-family:'DM Serif Display',serif;font-size:1rem;padding:.75rem .9rem;border:1.5px solid var(--muted);background:var(--paper);color:var(--ink);outline:none;transition:border-color .15s;width:100%;resize:vertical;border-radius:0;-webkit-appearance:none}
+  .form-group textarea:focus,.form-group input:focus{border-color:var(--ink)}
+  .form-group textarea{min-height:100px}
+  .coined-preview{background:var(--cream);border:2px solid var(--gold);padding:1.5rem;margin-bottom:1rem;position:relative;animation:fadeSlideIn .4s ease forwards}
+  .coined-preview::before{content:'AI COINED';position:absolute;top:-.65rem;left:1rem;background:var(--gold);color:var(--paper);font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.18em;padding:.12rem .45rem}
+  .coined-preview .word-title{font-size:clamp(1.8rem,8vw,3rem)}
+  .coin-hint{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--muted);font-style:italic;margin-top:.5rem;min-height:1em}
+  .success-flash{display:none;font-family:'DM Mono',monospace;font-size:.7rem;color:var(--gold);letter-spacing:.1em;padding:.5rem 0;animation:fadeSlideIn .3s ease}
+  .archive-section{border-top:2px solid var(--ink);padding-top:1.5rem;margin-top:.5rem}
+  .archive-header{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:.05em;margin-bottom:1rem;display:flex;align-items:center;gap:.8rem}
+  .archive-header::after{content:'';flex:1;height:1px;background:var(--ink);opacity:.15}
+  .archive-grid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
+  .archive-card{border:1.5px solid var(--ink);padding:1rem;cursor:pointer;transition:all .15s;background:var(--paper);animation:fadeSlideIn .4s ease forwards}
+  .archive-card:active{background:var(--cream);transform:scale(.98)}
+  .archive-card .word-title{font-size:1.4rem}.archive-card .word-pos{font-size:.8rem}
+  .archive-card .word-definition{font-size:.78rem;margin-top:.3rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;color:var(--muted)}
+  .archive-card.human-coined{border-color:var(--gold)}
+  .archive-card.human-coined::after{content:'✍';display:block;font-size:.65rem;color:var(--gold);margin-top:.4rem}
+  .ornament{text-align:center;color:var(--gold);font-size:1rem;letter-spacing:.4rem;margin:1.2rem 0;opacity:.5}
+  #shareCardTarget{position:fixed;left:-9999px;top:0;width:1080px;background:#f5efe3;padding:70px;font-family:'DM Serif Display',serif;color:#1a1208;display:flex;flex-direction:column;box-sizing:border-box}
+  #shareCardTarget .sc-brand{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.04em;padding-bottom:0.5rem;border-bottom:3px solid #1a1208;display:flex;justify-content:space-between;align-items:baseline;margin-bottom:1.2rem;flex-shrink:0}
+  #shareCardTarget .sc-brand span{color:#d4421a}
+  #shareCardTarget .sc-brand small{font-family:'DM Mono',monospace;font-size:.85rem;color:#7a6f5e;letter-spacing:.1em}
+  #shareCardTarget .sc-word{font-family:'Bebas Neue',sans-serif;font-size:8rem;letter-spacing:.02em;line-height:1;margin-bottom:0.3rem;flex-shrink:0}
+  #shareCardTarget .sc-meta{font-family:'DM Mono',monospace;font-size:1.8rem;color:#c9952a;margin-bottom:1rem;display:flex;gap:1rem;align-items:baseline;flex-shrink:0}
+  #shareCardTarget .sc-meta .pos{color:#7a6f5e;font-style:italic;font-family:'DM Serif Display',serif;font-size:1.6rem}
+  #shareCardTarget .sc-rule-gold{border:none;border-top:2px solid #c9952a;margin:0 0 1rem;flex-shrink:0}
+  #shareCardTarget .sc-etymology{font-family:'DM Mono',monospace;font-size:1.8rem;color:#7a6f5e;border-left:4px solid #c9952a;padding-left:0.8rem;margin-bottom:1rem;line-height:1.4;flex-shrink:0}
+  #shareCardTarget .sc-rule-gold2{border:none;border-top:2px solid #c9952a;margin:0 0 1.2rem;flex-shrink:0}
+  #shareCardTarget .sc-definition{font-size:2.8rem;line-height:1.4;font-weight:bold;color:#1a1208;margin-bottom:1.2rem;flex-shrink:0}
+  #shareCardTarget .sc-rule-ink{border:none;border-top:1px solid #1a1208;opacity:0.2;margin:0 0 1rem;flex-shrink:0}
+  #shareCardTarget .sc-example{font-style:italic;font-size:2.6rem;color:#7a6f5e;line-height:1.5;flex-shrink:0}
+  #shareCardTarget .sc-footer{display:none}
+  .share-modal{display:none;position:fixed;inset:0;background:rgba(26,18,8,.85);z-index:1000;align-items:flex-end;justify-content:center;padding:1rem}
+  .share-modal.visible{display:flex}
+  .share-modal-inner{background:var(--paper);width:100%;max-width:480px;padding:1.5rem;border:2px solid var(--ink);animation:fadeSlideIn .3s ease}
+  .share-modal-title{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:.05em;margin-bottom:1rem;display:flex;justify-content:space-between;align-items:center}
+  .share-modal-close{font-family:'DM Mono',monospace;font-size:1.2rem;background:none;border:none;cursor:pointer;color:var(--muted);padding:0 .3rem}
+  .share-preview-img{width:100%;border:1px solid var(--muted);margin-bottom:1rem;display:block}
+  .share-modal-hint{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--muted);letter-spacing:.08em;text-align:center;margin-top:.6rem}
+  footer{border-top:2px solid var(--ink);padding:.8rem 1.2rem;font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.08em;text-align:center;margin-top:2rem}
 </style>
 </head>
 <body>
-
 <header>
   <div class="masthead">WORD<span>GUNK</span></div>
-  <div class="header-right">
-    New vocabulary<br>for a broken world<br>
-    <span style="color:var(--accent)">Free · Always</span>
-  </div>
+  <div class="header-right">New vocabulary<br>for a broken world<br><span style="color:var(--accent)">Free · Always</span></div>
 </header>
-
 <div class="main-container">
-
-  <!-- TABS -->
   <div class="tabs">
-    <button class="tab active" onclick="switchTab('discover', this)">⚡ Discover</button>
-    <button class="tab" onclick="switchTab('coin', this)">✍ Coin a Word</button>
+    <button class="tab active" onclick="switchTab('discover',this)">&#9889; Discover</button>
+    <button class="tab" onclick="switchTab('coin',this)">&#9997; Coin a Word</button>
   </div>
-
-  <!-- DISCOVER PANEL -->
   <div class="panel active" id="panel-discover">
-
     <div class="category-pills">
       <button class="pill active" onclick="setCategory(this,'all')">All</button>
       <button class="pill" onclick="setCategory(this,'social media')">Social</button>
@@ -509,393 +111,294 @@
       <button class="pill" onclick="setCategory(this,'parenting')">Parenting</button>
       <button class="pill" onclick="setCategory(this,'consumerism')">Money</button>
     </div>
-
-    <div class="error-state" id="errorState">⚠ The dictionary is sulking. Try again.</div>
+    <div class="error-state" id="errorState">The dictionary is sulking. Try again.</div>
     <div class="loading-state" id="loadingState">CONSULTING THE LINGUISTS <span class="loading-dots"></span></div>
-
     <div class="featured-word" id="featuredWord">
       <div class="featured-label">Word of the Moment</div>
       <div class="word-entry" id="wordContent">
         <div class="word-main">
           <div class="word-title">FOLLOWMORT</div>
           <div class="word-pos">n.</div>
-          <div class="word-pronunciation">/ˈfä-lō-môrt/</div>
+          <div class="word-pronunciation">/fa-lo-mort/</div>
         </div>
-        <div class="word-etymology">From <em>follow</em> + <em>mortification</em> (Lat. mortificatio)</div>
-        <div class="word-definition">The secondhand shame that washes over you upon discovering someone follows an account they absolutely should not — an ex, a conspiracy theorist, or a brand they publicly hate.</div>
-        <div class="word-example">I checked his following list and felt pure followmort — he's been lurking his ex's CrossFit gym since 2019.</div>
+        <div class="word-etymology">From follow + mortification (Lat. mortificatio)</div>
+        <div class="word-definition">The secondhand shame that washes over you upon discovering someone follows an account they absolutely should not.</div>
+        <div class="word-example">I checked his following list and felt pure followmort.</div>
       </div>
     </div>
-
-    <!-- SHARE BAR -->
     <div class="share-bar">
-      <button class="btn btn-accent" onclick="shareCurrentWord()">📲 Share This Word</button>
-      <button class="btn btn-outline" id="generateBtn" onclick="generateWord()" style="flex:0.5">⚡ New</button>
+      <button class="btn btn-accent" onclick="shareCurrentWord()">Share This Word</button>
+      <button class="btn btn-outline" id="generateBtn" onclick="generateWord()" style="flex:0.5">New</button>
     </div>
-
-    <div class="ornament">✦ ✦ ✦</div>
-
+    <div class="ornament">* * *</div>
     <div class="archive-section">
       <div class="archive-header">Recent Words</div>
       <div class="archive-grid" id="archiveGrid"></div>
     </div>
-
   </div>
-
-  <!-- COIN PANEL -->
   <div class="panel" id="panel-coin">
-
     <div id="step1">
       <div class="form-group">
         <label>Describe the feeling or situation *</label>
-        <textarea id="inputSituation" placeholder="e.g. The guilt of ordering DoorDash when the restaurant is literally across the street... or the shame spiral of watching someone's story by accident and knowing they can see it..."></textarea>
+        <textarea id="inputSituation" placeholder="e.g. The guilt of ordering DoorDash when the restaurant is literally across the street..."></textarea>
       </div>
       <div class="form-group">
-        <label>Word hint — any vibe or sound you like? (optional)</label>
-        <input type="text" id="inputWordHint" placeholder="e.g. something that sounds vaguely Latin, or has 'shame' in it...">
+        <label>Word hint (optional)</label>
+        <input type="text" id="inputWordHint" placeholder="e.g. something that sounds vaguely Latin...">
       </div>
-      <button class="btn btn-gold" id="coinBtn" onclick="coinWordFromFeeling()">⚡ Coin It</button>
+      <button class="btn btn-gold" id="coinBtn" onclick="coinWordFromFeeling()">Coin It</button>
       <div class="coin-hint" id="coinHint"></div>
     </div>
-
-    <div id="step2" style="display:none;">
+    <div id="step2" style="display:none">
       <div class="coined-preview" id="coinedPreview"></div>
-      <div class="btn-row" style="margin-bottom:0.6rem;">
-        <button class="btn" onclick="publishCoined()">✍ Publish</button>
-        <button class="btn btn-outline" onclick="rerollCoined()">↺ Try Again</button>
+      <div class="btn-row" style="margin-bottom:.6rem">
+        <button class="btn" onclick="publishCoined()">Publish</button>
+        <button class="btn btn-outline" onclick="rerollCoined()">Try Again</button>
       </div>
-      <button class="btn btn-outline" onclick="resetCoinForm()" style="font-size:0.85rem; padding:0.6rem;">← Start Over</button>
+      <button class="btn btn-outline" onclick="resetCoinForm()" style="font-size:.85rem;padding:.6rem">Start Over</button>
     </div>
-
-    <div class="success-flash" id="successFlash">✓ Word added — legend.</div>
-
+    <div class="success-flash" id="successFlash">Word added. Legend.</div>
   </div>
-
 </div>
-
-<!-- SHARE MODAL -->
 <div class="share-modal" id="shareModal" onclick="closeShareModal(event)">
   <div class="share-modal-inner">
     <div class="share-modal-title">
       Share This Word
-      <button class="share-modal-close" onclick="closeModal()">✕</button>
+      <button class="share-modal-close" onclick="closeModal()">X</button>
     </div>
-    <img class="share-preview-img" id="sharePreviewImg" src="" alt="Word card preview">
-    <button class="btn btn-accent" onclick="downloadCard()">⬇ Save to Camera Roll</button>
-    <div class="share-modal-hint">Save the image · Post to your story · Tag #wordgunk</div>
+    <img class="share-preview-img" id="sharePreviewImg" src="" alt="Word card">
+    <div style="display:flex;gap:12px;align-items:center;margin-bottom:1rem">
+    <span style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted)">Colorway</span>
+    <button class="wc-swatch" data-theme="cream" onclick="applyTheme('cream');regenerateCard()" style="width:28px;height:28px;border-radius:50%;background:#f5efe3;border:2px solid #1a1208;cursor:pointer;transition:all 0.15s;box-shadow:0 0 0 2px #fff, 0 0 0 4px #f5efe3"></button>
+    <button class="wc-swatch" data-theme="ink" onclick="applyTheme('ink');regenerateCard()" style="width:28px;height:28px;border-radius:50%;background:#1a1208;border:2px solid #1a1208;cursor:pointer;transition:all 0.15s"></button>
+    <button class="wc-swatch" data-theme="red" onclick="applyTheme('red');regenerateCard()" style="width:28px;height:28px;border-radius:50%;background:#d4421a;border:2px solid #d4421a;cursor:pointer;transition:all 0.15s"></button>
+  </div>
+  <button class="btn btn-accent" id="saveBtn" onclick="saveCard()">Save Image</button>
+    <div class="share-modal-hint">Save the image and post to your story. Tag #wordgunk</div>
   </div>
 </div>
-
-<!-- OFF-SCREEN SHARE CARD RENDER TARGET -->
 <div id="shareCardTarget">
-  <div class="sc-brand">WORD<span>GUNK</span> <small>wordgunk.com</small></div>
+  <div class="sc-brand">WORDGUNK <small>wordgunk.com</small></div>
   <div class="sc-word" id="sc-word"></div>
-  <div class="sc-meta">
-    <span class="pos" id="sc-pos"></span>
-    <span id="sc-pronunciation"></span>
-  </div>
+  <div class="sc-meta"><span class="pos" id="sc-pos"></span><span id="sc-pronunciation"></span></div>
   <div class="sc-etymology" id="sc-etymology"></div>
   <div class="sc-definition" id="sc-definition"></div>
   <div class="sc-example" id="sc-example"></div>
-  <div class="sc-footer">wordgunk.com · New words for a broken world</div>
+  <div class="sc-footer">wordgunk.com - New words for a broken world</div>
 </div>
-
-<footer>WORDGUNK™ · Coining the language you didn't know you needed · Not liable for dictionary injuries</footer>
-
+<footer>WORDGUNK - Coining the language you did not know you needed</footer>
 <script>
-let currentCategory = 'all';
-const archive = [];
-let coinedWord = null;
-let lastSituation = '';
-let lastHint = '';
-let currentWord = null;
-let shareCardDataUrl = null;
+var currentCategory='all',archive=[],coinedWord=null,lastSituation='',lastHint='',currentWord=null,shareCardDataUrl=null;
 
-// ── TABS ──────────────────────────────────────────────────────
-function switchTab(name, el) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+var wcThemes={
+  cream:{bg:'#f5efe3',text:'#1a1208',muted:'#7a6f5e',gold:'#c9952a',brand:'#1a1208',brandAccent:'#d4421a',rule:'#c9952a',ruleInk:'#1a1208',url:'#7a6f5e',canvasBg:'#f5efe3'},
+  ink:{bg:'#1a1208',text:'#f5efe3',muted:'#c9952a',gold:'#c9952a',brand:'#f5efe3',brandAccent:'#d4421a',rule:'#c9952a',ruleInk:'#f5efe3',url:'#7a6f5e',canvasBg:'#1a1208'},
+  red:{bg:'#d4421a',text:'#f5efe3',muted:'#f5efe3',gold:'#f5efe3',brand:'#f5efe3',brandAccent:'#f5efe3',rule:'#f5efe3',ruleInk:'#f5efe3',url:'#ede5d0',canvasBg:'#d4421a'}
+};
+var wcCurrentTheme='cream';
+
+function applyTheme(key){
+  wcCurrentTheme=key;
+  var t=wcThemes[key];
+  var sc=document.getElementById('shareCardTarget');
+  sc.style.background=t.bg;
+  sc.querySelectorAll('.sc-word,.sc-definition').forEach(function(el){el.style.color=t.text;});
+  sc.querySelectorAll('.sc-meta').forEach(function(el){el.style.color=t.gold;});
+  sc.querySelectorAll('.sc-etymology,.sc-example').forEach(function(el){el.style.color=t.muted;});
+  sc.querySelectorAll('.sc-brand').forEach(function(el){el.style.borderBottomColor=t.text;el.style.color=t.brand;});
+  sc.querySelectorAll('.sc-brand span').forEach(function(el){el.style.color=t.brandAccent;});
+  sc.querySelectorAll('.sc-brand small').forEach(function(el){el.style.color=t.url;});
+  sc.querySelectorAll('.sc-rule-gold,.sc-rule-gold2').forEach(function(el){el.style.borderTopColor=t.rule;});
+  sc.querySelectorAll('.sc-rule-ink').forEach(function(el){el.style.borderTopColor=t.ruleInk;});
+  sc.querySelectorAll('.sc-etymology').forEach(function(el){el.style.borderLeftColor=t.rule;});
+  document.querySelectorAll('.wc-swatch').forEach(function(s){
+    s.style.boxShadow=s.dataset.theme===key?'0 0 0 2px #fff, 0 0 0 4px '+t.bg:'none';
+    s.style.transform=s.dataset.theme===key?'scale(1.2)':'scale(1)';
+  });
+}
+
+async function regenerateCard(){
+  var t=wcThemes[wcCurrentTheme];
+  var cardEl=document.getElementById('shareCardTarget');
+  var cardHeight=Math.max(cardEl.scrollHeight,1080);
+  var canvas=await html2canvas(cardEl,{scale:1,useCORS:true,backgroundColor:t.canvasBg,logging:false,width:1080,height:cardHeight});
+  shareCardDataUrl=canvas.toDataURL('image/png');
+  document.getElementById('sharePreviewImg').src=shareCardDataUrl;
+}
+function switchTab(name,el){
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active')});
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active')});
   el.classList.add('active');
-  document.getElementById('panel-' + name).classList.add('active');
+  document.getElementById('panel-'+name).classList.add('active');
 }
 
-// ── SURPRISE ME ───────────────────────────────────────────────
-async function generateWord() {
-  const btn = document.getElementById('generateBtn');
-  const loading = document.getElementById('loadingState');
-  const featured = document.getElementById('featuredWord');
-  const errorState = document.getElementById('errorState');
+async function callAPI(prompt,maxTokens){
+  var response=await fetch('/api/generate',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'claude-haiku-4-5',max_tokens:maxTokens,messages:[{role:'user',content:prompt}]})
+  });
+  var data=await response.json();
+  var text=data.content.map(function(i){return i.text||''}).join('');
+  return JSON.parse(text.replace(/```json|```/g,'').trim());
+}
 
-  btn.disabled = true;
-  btn.textContent = '...';
-  loading.style.display = 'block';
-  featured.style.opacity = '0.3';
-  errorState.style.display = 'none';
-
-  const categoryPrompt = currentCategory === 'all'
-    ? 'Pick any funny contemporary category (social media, dating, work culture, parenting, consumerism, wellness culture, celebrity, tech, etc.)'
-    : `Category: ${currentCategory}`;
-
-  const prompt = `You are a satirical lexicographer inventing hilarious new English words for modern life. ${categoryPrompt}.
-
-Invent ONE new comedic word that captures a very specific, painfully relatable modern experience. Make the word feel genuinely coined — blend real roots, prefixes, or suffixes cleverly.
-
-Respond ONLY with valid JSON (no markdown, no backticks):
-{
-  "word": "WORDNAME",
-  "pos": "n.",
-  "pronunciation": "/phonetic/",
-  "etymology": "From [root1] + [root2] (brief Latin/Greek/language note if applicable)",
-  "definition": "The precise, witty definition (1-2 sentences). Deadpan tone, specific, sharp.",
-  "example": "A single example sentence using the word naturally in context. Should be funny and specific.",
-  "category": "the category this belongs to"
-}`;
-
-  try {
-    const response = await fetch("/api/generate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-5",
-        max_tokens: 1000,
-        messages: [{ role: "user", content: prompt }]
-      })
-    });
-    
-    const data = await response.json();
-    const text = data.content.map(i => i.text || '').join(''); const word = JSON.parse(text.replace(/```json|```/g, '').trim());
-    displayWord(word);
-    addToArchive(word);
-  } catch (err) {
-    console.error(err);
-    errorState.style.display = 'block';
-  } finally {
-    btn.disabled = false;
-    btn.textContent = '⚡ New';
-    loading.style.display = 'none';
-    featured.style.opacity = '1';
+function truncateWord(w){var d=w.definition.split(" ");var e=w.example.split(" ");if(d.length>20)w.definition=d.slice(0,20).join(" ")+"...";if(e.length>15)w.example=e.slice(0,15).join(" ")+"...";return w;}async function generateWord(){
+  var btn=document.getElementById('generateBtn');
+  var loading=document.getElementById('loadingState');
+  var featured=document.getElementById('featuredWord');
+  var errorState=document.getElementById('errorState');
+  btn.disabled=true;btn.textContent='...';
+  loading.style.display='block';featured.style.opacity='0.3';errorState.style.display='none';
+  var catPrompt=currentCategory==='all'?'Pick any funny contemporary category (social media, dating, work culture, parenting, consumerism, wellness culture, tech)':'Category: '+currentCategory;
+  var prompt='You are a satirical lexicographer inventing hilarious new English words for modern life. '+catPrompt+'.\nInvent ONE new comedic word capturing a specific painfully relatable modern experience. Keep definition under 20 words. Keep example sentence under 15 words.\nRespond ONLY with valid JSON no markdown no backticks:\n{"word":"WORDNAME","pos":"n.","pronunciation":"/phonetic/","etymology":"From root1 + root2 (keep under 8 words total)","definition":"Witty definition, max 20 words, 1 sentence..","example":"Funny example sentence, max 15 words.","category":"category"}';
+  try{
+    var word=await callAPI(prompt,500);
+    displayWord(word);addToArchive(word);
+  }catch(err){
+    console.error(err);errorState.style.display='block';
+  }finally{
+    btn.disabled=false;btn.textContent='New';
+    loading.style.display='none';featured.style.opacity='1';
   }
 }
 
-// ── COIN FROM FEELING ─────────────────────────────────────────
-async function coinWordFromFeeling() {
-  const situation = document.getElementById('inputSituation').value.trim();
-  if (!situation) { alert('Describe the feeling first.'); return; }
-
-  lastSituation = situation;
-  lastHint = document.getElementById('inputWordHint').value.trim();
-
-  const coinBtn = document.getElementById('coinBtn');
-  const hint = document.getElementById('coinHint');
-  coinBtn.disabled = true;
-  coinBtn.textContent = 'COINING...';
-  hint.textContent = 'Consulting the lexicographers...';
-
-  const hintLine = lastHint ? `\nWord vibe the person wants: "${lastHint}"` : '';
-
-  const prompt = `You are a satirical lexicographer. Someone described a specific modern feeling. Invent the PERFECT new word for it.
-
-Feeling: "${situation}"${hintLine}
-
-The word should sound real, feel immediately satisfying, and be funny in definition and example.
-
-Respond ONLY with valid JSON (no markdown, no backticks):
-{
-  "word": "WORDNAME",
-  "pos": "n.",
-  "pronunciation": "/phonetic/",
-  "etymology": "From [root1] + [root2]",
-  "definition": "Precise, witty, deadpan definition (1-2 sentences).",
-  "example": "One funny specific example sentence."
-}`;
-
-  try {
-    const response = await fetch("/api/generate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-5",
-        max_tokens: 800,
-        messages: [{ role: "user", content: prompt }]
-      })
-    });
-    
-    const data = await response.json();
-    const text = data.content.map(i => i.text || '').join(''); const word = JSON.parse(text.replace(/```json|```/g, '').trim());
-    word.humanCoined = true;
-    coinedWord = word;
-    showCoinedPreview(word);
-    hint.textContent = '';
-  } catch (err) {
-    hint.textContent = '⚠ Something went wrong. Try again.';
-    console.error(err);
-  } finally {
-    coinBtn.disabled = false;
-    coinBtn.textContent = '⚡ Coin It';
+async function coinWordFromFeeling(){
+  var situation=document.getElementById('inputSituation').value.trim();
+  if(!situation){alert('Describe the feeling first.');return;}
+  lastSituation=situation;
+  lastHint=document.getElementById('inputWordHint').value.trim();
+  var coinBtn=document.getElementById('coinBtn');
+  var hint=document.getElementById('coinHint');
+  coinBtn.disabled=true;coinBtn.textContent='COINING...';
+  hint.textContent='Consulting the lexicographers...';
+  var hintLine=lastHint?'\nWord vibe: "'+lastHint+'"':'';
+  var prompt='You are a satirical lexicographer. Invent the PERFECT new word for this feeling:\n"'+situation+'"'+hintLine+'\nRespond ONLY with valid JSON no markdown no backticks:\n{"word":"WORDNAME","pos":"n.","pronunciation":"/phonetic/","etymology":"From root1 + root2 (keep under 8 words total)","definition":"Precise witty definition.","example":"Funny example sentence, max 15 words."}';
+  try{
+    var word=await callAPI(prompt,500);
+    word.humanCoined=true;coinedWord=word;
+    showCoinedPreview(word);hint.textContent='';
+  }catch(err){
+    hint.textContent='Something went wrong. Try again.';console.error(err);
+  }finally{
+    coinBtn.disabled=false;coinBtn.textContent='Coin It';
   }
 }
 
-async function rerollCoined() {
-  document.getElementById('step2').style.display = 'none';
-  document.getElementById('step1').style.display = 'block';
-  document.getElementById('inputSituation').value = lastSituation;
-  document.getElementById('inputWordHint').value = lastHint;
+async function rerollCoined(){
+  document.getElementById('step2').style.display='none';
+  document.getElementById('step1').style.display='block';
+  document.getElementById('inputSituation').value=lastSituation;
+  document.getElementById('inputWordHint').value=lastHint;
   await coinWordFromFeeling();
 }
 
-function showCoinedPreview(word) {
-  const preview = document.getElementById('coinedPreview');
-  preview.innerHTML = wordEntryHTML(word, true);
-  document.getElementById('step1').style.display = 'none';
-  document.getElementById('step2').style.display = 'block';
+function showCoinedPreview(word){
+  document.getElementById('coinedPreview').innerHTML=wordEntryHTML(word,true);
+  document.getElementById('step1').style.display='none';
+  document.getElementById('step2').style.display='block';
 }
 
-function publishCoined() {
-  if (!coinedWord) return;
-  displayWord(coinedWord);
-  addToArchive(coinedWord);
-  resetCoinForm();
-  switchTab('discover', document.querySelectorAll('.tab')[0]);
-  const flash = document.getElementById('successFlash');
-  flash.style.display = 'block';
-  setTimeout(() => flash.style.display = 'none', 3000);
+function publishCoined(){
+  if(!coinedWord)return;
+  displayWord(coinedWord);addToArchive(coinedWord);resetCoinForm();
+  switchTab('discover',document.querySelectorAll('.tab')[0]);
+  var flash=document.getElementById('successFlash');
+  flash.style.display='block';
+  setTimeout(function(){flash.style.display='none'},3000);
 }
 
-function resetCoinForm() {
-  document.getElementById('step1').style.display = 'block';
-  document.getElementById('step2').style.display = 'none';
-  document.getElementById('inputSituation').value = '';
-  document.getElementById('inputWordHint').value = '';
-  document.getElementById('coinHint').textContent = '';
-  coinedWord = null; lastSituation = ''; lastHint = '';
+function resetCoinForm(){
+  document.getElementById('step1').style.display='block';
+  document.getElementById('step2').style.display='none';
+  document.getElementById('inputSituation').value='';
+  document.getElementById('inputWordHint').value='';
+  document.getElementById('coinHint').textContent='';
+  coinedWord=null;lastSituation='';lastHint='';
 }
 
-// ── SHARE CARD ────────────────────────────────────────────────
-async function shareCurrentWord() {
-  if (!currentWord) return;
-
-  // Populate off-screen card
-  document.getElementById('sc-word').textContent = currentWord.word;
-  document.getElementById('sc-pos').textContent = currentWord.pos;
-  document.getElementById('sc-pronunciation').textContent = currentWord.pronunciation || '';
-  document.getElementById('sc-etymology').innerHTML = currentWord.etymology || '';
-  document.getElementById('sc-definition').textContent = currentWord.definition;
-  document.getElementById('sc-example').textContent = '\u201C' + currentWord.example + '\u201D';
-
-  const shareBtn = document.querySelector('.share-bar .btn-accent');
-  shareBtn.textContent = 'Generating...';
-  shareBtn.disabled = true;
-
-  try {
-    const canvas = await html2canvas(document.getElementById('shareCardTarget'), {
-      scale: 1,
-      useCORS: true,
-      backgroundColor: '#ede5d0',
-      logging: false
-    });
-    shareCardDataUrl = canvas.toDataURL('image/png');
-    document.getElementById('sharePreviewImg').src = shareCardDataUrl;
+async function shareCurrentWord(){
+  if(!currentWord)return;
+  applyTheme('cream');
+  document.getElementById('sc-word').textContent=currentWord.word;
+  document.getElementById('sc-pos').textContent=currentWord.pos;
+  document.getElementById('sc-pronunciation').textContent=currentWord.pronunciation||'';
+  document.getElementById('sc-etymology').innerHTML=currentWord.etymology||'';
+  document.getElementById('sc-definition').textContent=currentWord.definition;
+  document.getElementById('sc-example').textContent='"'+currentWord.example+'"';
+  var shareBtn=document.querySelector('.share-bar .btn-accent');
+  shareBtn.textContent='Generating...';shareBtn.disabled=true;
+  try{
+    var cardEl=document.getElementById("shareCardTarget");var cardHeight=Math.max(cardEl.scrollHeight,1080);var t=wcThemes[wcCurrentTheme];var canvas=await html2canvas(document.getElementById('shareCardTarget'),{scale:1,useCORS:true,backgroundColor:t.canvasBg,logging:false,width:1080,height:cardHeight});
+    shareCardDataUrl=canvas.toDataURL('image/png');
+    document.getElementById('sharePreviewImg').src=shareCardDataUrl;
     document.getElementById('shareModal').classList.add('visible');
-  } catch(e) {
-    console.error(e);
-    alert('Could not generate card. Try again.');
-  } finally {
-    shareBtn.textContent = '📲 Share This Word';
-    shareBtn.disabled = false;
+  }catch(e){
+    console.error(e);alert('Could not generate card. Try again.');
+  }finally{
+    shareBtn.textContent='Share This Word';shareBtn.disabled=false;
   }
 }
 
-async function downloadCard() {
-  if (!shareCardDataUrl) return;
-  if (navigator.share && /mobile/i.test(navigator.userAgent)) {
-    try {
-      const blob = await (await fetch(shareCardDataUrl)).blob();
-      const file = new File([blob], (currentWord ? currentWord.word.toLowerCase() : 'wordgunk') + '-wordgunk.png', { type: 'image/png' });
-      await navigator.share({ files: [file], title: currentWord ? currentWord.word : 'WORDGUNK' });
-    } catch (err) { console.error(err); }
-  } else {
-    const a = document.createElement('a');
-    a.href = shareCardDataUrl;
-    a.download = (currentWord ? currentWord.word.toLowerCase() : 'wordgunk') + '-wordgunk.png';
-    a.click();
+async function saveCard(){
+  if(!shareCardDataUrl)return;
+  var isMobile=/iphone|ipad|ipod|android/i.test(navigator.userAgent);
+  if(isMobile&&navigator.share){
+    try{
+      var blob=await (await fetch(shareCardDataUrl)).blob();
+      var filename=(currentWord?currentWord.word.toLowerCase():'wordgunk')+'-wordgunk.png';
+      var file=new File([blob],filename,{type:'image/png'});
+      if(navigator.canShare&&navigator.canShare({files:[file]})){
+        await navigator.share({files:[file],title:currentWord?currentWord.word:'WORDGUNK'});
+        return;
+      }
+    }catch(err){console.error(err);}
   }
-      await navigator.share({ files: [file], title: currentWord ? currentWord.word : 'WORDGUNK' });
-    } catch (err) { console.error(err); }
-  } else {
-    const a = document.createElement('a');
-    a.href = shareCardDataUrl;
-    a.download = (currentWord ? currentWord.word.toLowerCase() : 'wordgunk') + '-wordgunk.png';
-    a.click();
-  }
+  var a=document.createElement('a');
+  a.href=shareCardDataUrl;
+  a.download=(currentWord?currentWord.word.toLowerCase():'wordgunk')+'-wordgunk.png';
+  a.click();
 }
 
-function closeShareModal(e) {
-  if (e.target === document.getElementById('shareModal')) closeModal();
-}
-function closeModal() {
-  document.getElementById('shareModal').classList.remove('visible');
+function closeShareModal(e){if(e.target===document.getElementById('shareModal'))closeModal();}
+function closeModal(){document.getElementById('shareModal').classList.remove('visible');}
+
+function wordEntryHTML(word,small){
+  var s=small?'font-size:clamp(1.8rem,8vw,3rem)':'';
+  return '<div class="word-main"><div class="word-title" style="'+s+'">'+word.word+'</div><div class="word-pos">'+word.pos+'</div><div class="word-pronunciation">'+(word.pronunciation||'')+'</div></div><div class="word-etymology">'+(word.etymology||'')+'</div><div class="word-definition">'+word.definition+'</div><div class="word-example">'+word.example+'</div>';
 }
 
-// ── DISPLAY & ARCHIVE ─────────────────────────────────────────
-function wordEntryHTML(word, small = false) {
-  const titleSize = small ? 'font-size:clamp(1.8rem,8vw,3rem)' : '';
-  return `
-    <div class="word-main">
-      <div class="word-title" style="${titleSize}">${word.word}</div>
-      <div class="word-pos">${word.pos}</div>
-      <div class="word-pronunciation">${word.pronunciation || ''}</div>
-    </div>
-    <div class="word-etymology">${word.etymology || ''}</div>
-    <div class="word-definition">${word.definition}</div>
-    <div class="word-example">${word.example}</div>
-  `;
+function displayWord(word){
+  currentWord=word;
+  var content=document.getElementById('wordContent');
+  var featured=document.getElementById('featuredWord');
+  content.innerHTML='<div class="word-entry">'+wordEntryHTML(word,false)+'</div>';
+  featured.style.animation='none';void featured.offsetWidth;
+  featured.style.animation='fadeSlideIn .5s ease forwards';
 }
 
-function displayWord(word) {
-  currentWord = word;
-  const content = document.getElementById('wordContent');
-  const featured = document.getElementById('featuredWord');
-  content.innerHTML = `<div class="word-entry">${wordEntryHTML(word)}</div>`;
-  featured.style.animation = 'none';
-  void featured.offsetWidth;
-  featured.style.animation = 'fadeSlideIn 0.5s ease forwards';
-}
-
-function addToArchive(word) {
-  if (archive.length && archive[0].word === word.word) return;
-  archive.unshift(word);
-  if (archive.length > 12) archive.pop();
+function addToArchive(word){
+  if(archive.length&&archive[0].word===word.word)return;
+  archive.unshift(word);if(archive.length>12)archive.pop();
   renderArchive();
 }
 
-function renderArchive() {
-  const grid = document.getElementById('archiveGrid');
-  grid.innerHTML = archive.map((w, i) => `
-    <div class="archive-card ${w.humanCoined ? 'human-coined' : ''}" style="animation-delay:${i*0.04}s"
-      onclick='displayWord(${JSON.stringify(w).replace(/'/g,"&#39;")});switchTab("discover",document.querySelectorAll(".tab")[0])'>
-      <div class="word-main">
-        <div class="word-title">${w.word}</div>
-        <div class="word-pos">${w.pos}</div>
-      </div>
-      <div class="word-definition">${w.definition}</div>
-    </div>
-  `).join('');
+function renderArchive(){
+  var grid=document.getElementById('archiveGrid');
+  grid.innerHTML=archive.map(function(w,i){
+    return '<div class="archive-card '+(w.humanCoined?'human-coined':'')+'" style="animation-delay:'+(i*0.04)+'s" onclick=\'displayWord('+JSON.stringify(w).replace(/'/g,"&#39;")+');switchTab("discover",document.querySelectorAll(".tab")[0])\'><div class="word-main"><div class="word-title">'+w.word+'</div><div class="word-pos">'+w.pos+'</div></div><div class="word-definition">'+w.definition+'</div></div>';
+  }).join('');
 }
 
-function setCategory(el, cat) {
-  currentCategory = cat;
-  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+function setCategory(el,cat){
+  currentCategory=cat;
+  document.querySelectorAll('.pill').forEach(function(p){p.classList.remove('active');});
   el.classList.add('active');
 }
 
-window.addEventListener('load', () => {
-  currentWord = {
-    word: 'FOLLOWMORT', pos: 'n.', pronunciation: '/\u02C8f\u00E4-l\u014D-m\u00F4rt/',
-    etymology: 'From follow + mortification (Lat. mortificatio)',
-    definition: 'The secondhand shame that washes over you upon discovering someone follows an account they absolutely should not \u2014 an ex, a conspiracy theorist, or a brand they publicly hate.',
-    example: "I checked his following list and felt pure followmort \u2014 he's been lurking his ex's CrossFit gym since 2019."
-  };
-  setTimeout(generateWord, 500);
+window.addEventListener('load',function(){
+  currentWord={word:'FOLLOWMORT',pos:'n.',pronunciation:'/fa-lo-mort/',etymology:'From follow + mortification (Lat. mortificatio)',definition:'The secondhand shame that washes over you upon discovering someone follows an account they absolutely should not.',example:"I checked his following list and felt pure followmort."};
+  setTimeout(generateWord,500);
 });
 </script>
 </body>
