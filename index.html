@@ -68,19 +68,19 @@
   .archive-card.human-coined{border-color:var(--gold)}
   .archive-card.human-coined::after{content:'✍';display:block;font-size:.65rem;color:var(--gold);margin-top:.4rem}
   .ornament{text-align:center;color:var(--gold);font-size:1rem;letter-spacing:.4rem;margin:1.2rem 0;opacity:.5}
-  #shareCardTarget{position:fixed;left:-9999px;top:0;width:1080px;background:#f5efe3;padding:70px;font-family:'DM Serif Display',serif;color:#1a1208;display:flex;flex-direction:column;box-sizing:border-box}
+  #shareCardTarget{position:fixed;left:-9999px;top:0;width:1080px;height:1350px;background:#f5efe3;padding:90px;font-family:'DM Serif Display',serif;color:#1a1208;display:flex;flex-direction:column;box-sizing:border-box}
   #shareCardTarget .sc-brand{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.04em;padding-bottom:0.5rem;border-bottom:3px solid #1a1208;display:flex;justify-content:space-between;align-items:baseline;margin-bottom:1.2rem;flex-shrink:0}
   #shareCardTarget .sc-brand span{color:#d4421a}
   #shareCardTarget .sc-brand small{font-family:'DM Mono',monospace;font-size:.85rem;color:#7a6f5e;letter-spacing:.1em}
-  #shareCardTarget .sc-word{font-family:'Bebas Neue',sans-serif;font-size:8rem;letter-spacing:.02em;line-height:1;margin-bottom:0.3rem;flex-shrink:0}
-  #shareCardTarget .sc-meta{font-family:'DM Mono',monospace;font-size:1.8rem;color:#c9952a;margin-bottom:1rem;display:flex;gap:1rem;align-items:baseline;flex-shrink:0}
+  #shareCardTarget .sc-word{font-family:'Bebas Neue',sans-serif;font-size:11rem;letter-spacing:.02em;line-height:1;margin-bottom:0.5rem;flex-shrink:0}
+  #shareCardTarget .sc-meta{font-family:'DM Mono',monospace;font-size:2rem;color:#c9952a;margin-bottom:1.5rem;display:flex;gap:1rem;align-items:baseline;flex-shrink:0}
   #shareCardTarget .sc-meta .pos{color:#7a6f5e;font-style:italic;font-family:'DM Serif Display',serif;font-size:1.6rem}
   #shareCardTarget .sc-rule-gold{border:none;border-top:2px solid #c9952a;margin:0 0 1rem;flex-shrink:0}
-  #shareCardTarget .sc-etymology{font-family:'DM Mono',monospace;font-size:1.8rem;color:#7a6f5e;border-left:4px solid #c9952a;padding-left:0.8rem;margin-bottom:1rem;line-height:1.4;flex-shrink:0}
+  #shareCardTarget .sc-etymology{font-family:'DM Mono',monospace;font-size:2rem;color:#7a6f5e;border-left:4px solid #c9952a;padding-left:0.8rem;margin-bottom:1.5rem;line-height:1.4;flex-shrink:0}
   #shareCardTarget .sc-rule-gold2{border:none;border-top:2px solid #c9952a;margin:0 0 1.2rem;flex-shrink:0}
-  #shareCardTarget .sc-definition{font-size:2.8rem;line-height:1.4;font-weight:bold;color:#1a1208;margin-bottom:1.2rem;flex-shrink:0}
+  #shareCardTarget .sc-definition{font-size:3.4rem;line-height:1.4;font-weight:bold;color:#1a1208;margin-bottom:1.8rem;flex-shrink:0}
   #shareCardTarget .sc-rule-ink{border:none;border-top:1px solid #1a1208;opacity:0.2;margin:0 0 1rem;flex-shrink:0}
-  #shareCardTarget .sc-example{font-style:italic;font-size:2.6rem;color:#7a6f5e;line-height:1.5;flex-shrink:0}
+  #shareCardTarget .sc-example{font-style:italic;font-size:3rem;color:#7a6f5e;line-height:1.5;flex-shrink:0}
   #shareCardTarget .sc-footer{display:none}
   .share-modal{display:none;position:fixed;inset:0;background:rgba(26,18,8,.85);z-index:1000;align-items:flex-end;justify-content:center;padding:1rem}
   .share-modal.visible{display:flex}
@@ -341,7 +341,7 @@ async function shareCurrentWord(){
   var shareBtn=document.querySelector('.share-bar .btn-accent');
   shareBtn.textContent='Generating...';shareBtn.disabled=true;
   try{
-    var cardEl=document.getElementById("shareCardTarget");var t=wcThemes[wcCurrentTheme];var canvas=await html2canvas(document.getElementById('shareCardTarget'),{scale:1,useCORS:true,backgroundColor:t.canvasBg,logging:false,width:1080,height:cardEl.scrollHeight});
+    var cardEl=document.getElementById("shareCardTarget");var t=wcThemes[wcCurrentTheme];var canvas=await html2canvas(document.getElementById('shareCardTarget'),{scale:1,useCORS:true,backgroundColor:t.canvasBg,logging:false,width:1080,height:1350});
     shareCardDataUrl=canvas.toDataURL('image/png');
     document.getElementById('sharePreviewImg').src=shareCardDataUrl;
     document.getElementById('shareModal').classList.add('visible');
