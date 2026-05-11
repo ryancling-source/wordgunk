@@ -370,6 +370,7 @@ async function saveCard(){
   a.href=shareCardDataUrl;
   a.download=(currentWord?currentWord.word.toLowerCase():'wordgunk')+'-wordgunk.png';
   a.click();
+  closeModal();
 }
 
 function closeShareModal(e){if(e.target===document.getElementById('shareModal'))closeModal();}
