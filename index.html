@@ -266,6 +266,7 @@ function truncateWord(w){var d=w.definition.split(" ");var e=w.example.split(" "
 var prompt='You are a satirical lexicographer inventing hilarious new English words for modern life. '+catPrompt+'.\nInvent ONE new comedic word. The word itself must be 13 characters or fewer. Use only standard English letters — no special characters, symbols, numbers, or characters from other languages. The example sentence MUST use the invented word itself. The example sentence must be completely different in scenario and setting from the definition. RULES: Do NOT use influenza, zoom, or any variation of existing words. Do NOT repeat or rhyme with these recent words: '+recentWords+'. Use a completely different word root than any of those recent words. Pick a completely different concept, root word, and theme each time. Keep definition under 25 words. Keep example sentence under 20 words.\nRespond ONLY with valid JSON no markdown no backticks:\n{"word":"WORDNAME","pos":"n.","pronunciation":"/phonetic/","etymology":"From root1 + root2 (keep under 8 words total)","definition":"Witty definition, max 25 words.","example":"Funny example sentence, max 20 words.","category":"category"}';
   try{
     var word=await callAPI(prompt,500);
+    if(word.word && word.word.length>13){word=await callAPI(prompt,500);}
     displayWord(word);addToArchive(word);saveWord(word);
   }catch(err){
     console.error(err);errorState.style.display='block';
