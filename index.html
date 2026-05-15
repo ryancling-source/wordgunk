@@ -424,6 +424,7 @@ function setCategory(el,cat){
   currentCategory=cat;
   document.querySelectorAll('.pill').forEach(function(p){p.classList.remove('active');});
   el.classList.add('active');
+  generateWord();
 }
 
 var galleryOffset=0,galleryLoaded=false;
