@@ -80,6 +80,11 @@
       border-color: var(--accent);
     }
 
+    input.missing, textarea.missing {
+      border-color: var(--accent);
+      background: #fff5f3;
+    }
+
     textarea {
       resize: vertical;
       min-height: 80px;
@@ -139,12 +144,6 @@
       background: #fff5f3;
     }
 
-    .divider {
-      border: none;
-      border-top: 2px solid var(--cream);
-      margin: 2rem 0;
-    }
-
     .required { color: var(--accent); }
   </style>
 </head>
@@ -158,14 +157,9 @@
       <input type="text" id="word" placeholder="e.g. TASKROT" autocomplete="off">
     </div>
 
-    <div class="form-group">
-      <label>Definition <span class="required">*</span></label>
-      <textarea id="definition" placeholder="e.g. the decay of a task that sits on your list so long it becomes part of your personality"></textarea>
-    </div>
-
     <div class="row">
       <div class="form-group">
-        <label>Part of Speech</label>
+        <label>Part of Speech <span class="required">*</span></label>
         <select id="pos">
           <option value="n.">n. — noun</option>
           <option value="v.">v. — verb</option>
@@ -176,33 +170,38 @@
       </div>
 
       <div class="form-group">
-        <label>Category</label>
-        <select id="category">
-          <option value="productivity">productivity</option>
-          <option value="tech">tech</option>
-          <option value="food">food</option>
-          <option value="social">social</option>
-          <option value="wellness">wellness</option>
-          <option value="work">work</option>
-          <option value="life">life</option>
-          <option value="other">other</option>
-        </select>
+        <label>Pronunciation <span class="required">*</span></label>
+        <input type="text" id="pronunciation" placeholder="e.g. /ˈtask.rɒt/">
       </div>
     </div>
 
     <div class="form-group">
-      <label>Example Sentence</label>
+      <label>Etymology <span class="required">*</span></label>
+      <input type="text" id="etymology" placeholder="e.g. From task + rot">
+    </div>
+
+    <div class="form-group">
+      <label>Definition <span class="required">*</span></label>
+      <textarea id="definition" placeholder="e.g. The decay of a task that sits on your list so long it becomes part of your personality"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Example Sentence <span class="required">*</span></label>
       <textarea id="example" placeholder="e.g. I have taskrot and I've had it for years." style="min-height:60px"></textarea>
     </div>
 
     <div class="form-group">
-      <label>Pronunciation</label>
-      <input type="text" id="pronunciation" placeholder="e.g. task-rot">
-    </div>
-
-    <div class="form-group">
-      <label>Etymology</label>
-      <input type="text" id="etymology" placeholder="e.g. task + rot">
+      <label>Category</label>
+      <select id="category">
+        <option value="productivity">productivity</option>
+        <option value="tech">tech</option>
+        <option value="food">food</option>
+        <option value="social">social</option>
+        <option value="wellness">wellness</option>
+        <option value="work">work</option>
+        <option value="life">life</option>
+        <option value="other">other</option>
+      </select>
     </div>
 
     <button class="btn" id="submitBtn" onclick="submitWord()">COIN THIS WORD</button>
@@ -211,7 +210,26 @@
   </div>
 
   <script>
+    const requiredFields = ['word', 'pronunciation', 'etymology', 'definition', 'example'];
+
     async function submitWord() {
+      const status = document.getElementById('status');
+      const btn = document.getElementById('submitBtn');
+
+      // Clear previous missing states
+      requiredFields.forEach(id => {
+        document.getElementById(id).classList.remove('missing');
+      });
+
+      // Validate all required fields
+      const missing = requiredFields.filter(id => !document.getElementById(id).value.trim());
+      if (missing.length > 0) {
+        missing.forEach(id => document.getElementById(id).classList.add('missing'));
+        status.className = 'status error';
+        status.textContent = 'Please fill in all required fields (marked with *).';
+        return;
+      }
+
       const word = document.getElementById('word').value.trim();
       const definition = document.getElementById('definition').value.trim();
       const pos = document.getElementById('pos').value;
@@ -219,14 +237,6 @@
       const example = document.getElementById('example').value.trim();
       const pronunciation = document.getElementById('pronunciation').value.trim();
       const etymology = document.getElementById('etymology').value.trim();
-      const status = document.getElementById('status');
-      const btn = document.getElementById('submitBtn');
-
-      if (!word || !definition) {
-        status.className = 'status error';
-        status.textContent = 'Word and definition are required.';
-        return;
-      }
 
       btn.disabled = true;
       btn.textContent = 'COINING...';
@@ -241,9 +251,9 @@
             definition,
             pos,
             category,
-            example: example || null,
-            pronunciation: pronunciation || null,
-            etymology: etymology || null,
+            example,
+            pronunciation,
+            etymology,
             human_coined: true
           })
         });
@@ -257,11 +267,7 @@
           status.className = 'status success';
           status.textContent = `✓ "${word.toUpperCase()}" coined and saved.`;
           // Clear form
-          document.getElementById('word').value = '';
-          document.getElementById('definition').value = '';
-          document.getElementById('example').value = '';
-          document.getElementById('pronunciation').value = '';
-          document.getElementById('etymology').value = '';
+          requiredFields.forEach(id => document.getElementById(id).value = '');
         } else {
           status.className = 'status error';
           status.textContent = 'Something went wrong. Check the console.';
@@ -276,11 +282,6 @@
       btn.disabled = false;
       btn.textContent = 'COIN THIS WORD';
     }
-
-    // Allow Enter key on word field to submit
-    document.getElementById('word').addEventListener('keydown', e => {
-      if (e.key === 'Enter') submitWord();
-    });
   </script>
 </body>
 </html>
