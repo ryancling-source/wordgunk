@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WORDGUNK — Add Word</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0,1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #1a1208;
+      --paper: #f5efe3;
+      --cream: #ede5d0;
+      --accent: #d4421a;
+      --gold: #c9952a;
+      --muted: #7a6f5e;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'DM Serif Display', serif;
+      min-height: 100vh;
+      padding: 3rem 1.5rem;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.4rem, 10vw, 4rem);
+      letter-spacing: .02em;
+      line-height: 1;
+      margin-bottom: .25rem;
+    }
+
+    h1 span { color: var(--accent); }
+
+    .subtitle {
+      font-family: 'DM Mono', monospace;
+      font-size: .7rem;
+      color: var(--muted);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: 2.5rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: .4rem;
+      margin-bottom: 1.25rem;
+    }
+
+    label {
+      font-family: 'DM Mono', monospace;
+      font-size: .65rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    input, textarea, select {
+      background: var(--cream);
+      border: 1.5px solid var(--ink);
+      color: var(--ink);
+      font-family: 'DM Serif Display', serif;
+      font-size: 1rem;
+      padding: .75rem 1rem;
+      width: 100%;
+      outline: none;
+      transition: border-color .15s;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--accent);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+      line-height: 1.55;
+    }
+
+    select {
+      font-family: 'DM Mono', monospace;
+      font-size: .85rem;
+      cursor: pointer;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .btn {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem;
+      letter-spacing: .08em;
+      padding: .9rem 2rem;
+      border: 2px solid var(--ink);
+      background: var(--ink);
+      color: var(--paper);
+      cursor: pointer;
+      width: 100%;
+      margin-top: .5rem;
+      transition: opacity .15s, transform .1s;
+    }
+
+    .btn:hover { opacity: .85; }
+    .btn:active { transform: scale(.98); }
+    .btn:disabled { opacity: .4; cursor: not-allowed; }
+
+    .status {
+      font-family: 'DM Mono', monospace;
+      font-size: .75rem;
+      padding: .75rem 1rem;
+      margin-top: 1rem;
+      display: none;
+      border: 1.5px solid;
+    }
+
+    .status.success {
+      display: block;
+      color: var(--gold);
+      border-color: var(--gold);
+      background: #fdf6e3;
+    }
+
+    .status.error {
+      display: block;
+      color: var(--accent);
+      border-color: var(--accent);
+      background: #fff5f3;
+    }
+
+    .divider {
+      border: none;
+      border-top: 2px solid var(--cream);
+      margin: 2rem 0;
+    }
+
+    .required { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>WORD<span>GUNK</span></h1>
+    <p class="subtitle">Admin — Add a Word</p>
+
+    <div class="form-group">
+      <label>Word <span class="required">*</span></label>
+      <input type="text" id="word" placeholder="e.g. TASKROT" autocomplete="off">
+    </div>
+
+    <div class="form-group">
+      <label>Definition <span class="required">*</span></label>
+      <textarea id="definition" placeholder="e.g. the decay of a task that sits on your list so long it becomes part of your personality"></textarea>
+    </div>
+
+    <div class="row">
+      <div class="form-group">
+        <label>Part of Speech</label>
+        <select id="pos">
+          <option value="n.">n. — noun</option>
+          <option value="v.">v. — verb</option>
+          <option value="adj.">adj. — adjective</option>
+          <option value="adv.">adv. — adverb</option>
+          <option value="phrase">phrase</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Category</label>
+        <select id="category">
+          <option value="productivity">productivity</option>
+          <option value="tech">tech</option>
+          <option value="food">food</option>
+          <option value="social">social</option>
+          <option value="wellness">wellness</option>
+          <option value="work">work</option>
+          <option value="life">life</option>
+          <option value="other">other</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Example Sentence</label>
+      <textarea id="example" placeholder="e.g. I have taskrot and I've had it for years." style="min-height:60px"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Pronunciation</label>
+      <input type="text" id="pronunciation" placeholder="e.g. task-rot">
+    </div>
+
+    <div class="form-group">
+      <label>Etymology</label>
+      <input type="text" id="etymology" placeholder="e.g. task + rot">
+    </div>
+
+    <button class="btn" id="submitBtn" onclick="submitWord()">COIN THIS WORD</button>
+
+    <div class="status" id="status"></div>
+  </div>
+
+  <script>
+    async function submitWord() {
+      const word = document.getElementById('word').value.trim();
+      const definition = document.getElementById('definition').value.trim();
+      const pos = document.getElementById('pos').value;
+      const category = document.getElementById('category').value;
+      const example = document.getElementById('example').value.trim();
+      const pronunciation = document.getElementById('pronunciation').value.trim();
+      const etymology = document.getElementById('etymology').value.trim();
+      const status = document.getElementById('status');
+      const btn = document.getElementById('submitBtn');
+
+      if (!word || !definition) {
+        status.className = 'status error';
+        status.textContent = 'Word and definition are required.';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'COINING...';
+      status.className = 'status';
+
+      try {
+        const res = await fetch('/api/save-word', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            word: word.toUpperCase(),
+            definition,
+            pos,
+            category,
+            example: example || null,
+            pronunciation: pronunciation || null,
+            etymology: etymology || null,
+            human_coined: true
+          })
+        });
+
+        const data = await res.json();
+
+        if (data.duplicate) {
+          status.className = 'status error';
+          status.textContent = `"${word.toUpperCase()}" already exists in the database.`;
+        } else if (data.success) {
+          status.className = 'status success';
+          status.textContent = `✓ "${word.toUpperCase()}" coined and saved.`;
+          // Clear form
+          document.getElementById('word').value = '';
+          document.getElementById('definition').value = '';
+          document.getElementById('example').value = '';
+          document.getElementById('pronunciation').value = '';
+          document.getElementById('etymology').value = '';
+        } else {
+          status.className = 'status error';
+          status.textContent = 'Something went wrong. Check the console.';
+          console.error(data);
+        }
+      } catch (err) {
+        status.className = 'status error';
+        status.textContent = 'Network error. Try again.';
+        console.error(err);
+      }
+
+      btn.disabled = false;
+      btn.textContent = 'COIN THIS WORD';
+    }
+
+    // Allow Enter key on word field to submit
+    document.getElementById('word').addEventListener('keydown', e => {
+      if (e.key === 'Enter') submitWord();
+    });
+  </script>
+</body>
+</html>
