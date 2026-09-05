@@ -247,11 +247,25 @@ async function callAPI(prompt,maxTokens){
   var response=await fetch('/api/generate',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({model:'claude-haiku-4-5',max_tokens:maxTokens,messages:[{role:'user',content:prompt}]})
+    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:maxTokens,messages:[{role:'user',content:prompt}]})
   });
   var data=await response.json();
+  if(!data.content){throw new Error('API error: '+(data.error&&data.error.message||JSON.stringify(data)));}
   var text=data.content.map(function(i){return i.text||''}).join('');
-  return JSON.parse(text.replace(/```json|```/g,'').trim());
+  return JSON.parse(extractFirstJSON(text));
+}
+
+function extractFirstJSON(text){
+  var fenced=text.match(/```json\s*([\s\S]*?)```/);
+  if(fenced) return fenced[1].trim();
+  var start=text.indexOf('{');
+  if(start===-1) throw new Error('No JSON object found in response: '+text.slice(0,200));
+  var depth=0;
+  for(var i=start;i<text.length;i++){
+    if(text[i]==='{')depth++;
+    else if(text[i]==='}'){depth--;if(depth===0)return text.slice(start,i+1);}
+  }
+  throw new Error('Unterminated JSON object in response: '+text.slice(0,200));
 }
 
 function truncateWord(w){var d=w.definition.split(" ");var e=w.example.split(" ");if(d.length>20)w.definition=d.slice(0,20).join(" ")+"...";if(e.length>15)w.example=e.slice(0,15).join(" ")+"...";return w;}async function generateWord(){
